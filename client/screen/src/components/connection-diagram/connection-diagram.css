@@ -41,15 +41,14 @@
 
 .diagram-item {
   position: relative;
-  background: radial-gradient(circle, #5ba9cc, #75bcc9);
-  /* background: #9ec5d0; */
+  background: radial-gradient(circle, #5ba9cc 0%, #5ba9cc 70%, #75bcc9 100%);
   border-radius: 100%;
   width: 50px;
   height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
-  filter: drop-shadow(0 0 2px #fff);
+  filter: drop-shadow(0 0 3px #fff);
 }
 .diagram-item img {
   width: 32px;
