@@ -9,7 +9,7 @@ let tray = null
 let win = null
 
 const createTray = () => {
-  tray = new Tray(path.join(__dirname, 'yoping.png'))
+  tray = new Tray(path.join(__dirname, 'yopingTemplate.png'))
   const contextMenu = Menu.buildFromTemplate([
     // { label: 'Quit', click: () => app.quit() }
   ])
