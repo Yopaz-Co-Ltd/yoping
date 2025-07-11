@@ -19,9 +19,10 @@ const createTray = () => {
     if (win) {
       win.isVisible() ? win.hide() : win.show()
     } else {
+      const tailHeight = 10
       win = new BrowserWindow({
         width: 375,
-        height: 420,
+        height: 420 + tailHeight,
         show: false,
         frame: false,
         transparent: true,
@@ -46,7 +47,7 @@ const createTray = () => {
         const trayBounds = tray.getBounds()
         const primaryDisplay = screen.getPrimaryDisplay()
         const x = Math.round(trayBounds.x + (trayBounds.width / 2) - (375 / 2))
-        const y = Math.round(trayBounds.y + trayBounds.height + 4)
+        const y = Math.round(trayBounds.y + trayBounds.height + 4 + tailHeight)
         win.setPosition(x, y)
         win.show()
       })
