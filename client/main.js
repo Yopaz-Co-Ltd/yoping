@@ -11,7 +11,7 @@ let win = null
 const createTray = () => {
   tray = new Tray(path.join(__dirname, 'yoping.png'))
   const contextMenu = Menu.buildFromTemplate([
-    { label: 'Quit', click: () => app.quit() }
+    // { label: 'Quit', click: () => app.quit() }
   ])
   tray.setContextMenu(contextMenu)
   tray.setToolTip('Yoping App')
