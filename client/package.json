@@ -1,0 +1,15 @@
+{
+  "name": "yoping",
+  "version": "1.0.0",
+  "description": "Ping it, log it, report it.",
+  "main": "main.js",
+  "scripts": {
+     "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Yopaz",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^37.2.1"
+  }
+}
