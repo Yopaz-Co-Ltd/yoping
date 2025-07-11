@@ -6,15 +6,16 @@ Yoping là hệ thống giám sát tình trạng mạng nội bộ và internet 
 
 ```
 yoping/
-├── client/       # Electron + ReactJS, chạy trên từng máy client (ping, wifi)
+├── client/       # Electron app (app:dev, app:start) + React (screen:dev, screen:build)
 ├── server/       # Golang + ClickHouse, nhận log và lưu trữ
 ├── frontend/     # ReactJS, dashboard báo cáo tình trạng mạng
 ```
 
 ## ⚙ Công nghệ sử dụng
 
-- **Client**: Electron + ReactJS
-  - Chạy trên máy người dùng, đo ping, RSSI WiFi, summary từng phút
+- **Client**: Electron + ReactJS (trong thư mục `client/screen`)
+  - Electron chạy trên máy người dùng, đo ping, RSSI WiFi, summary từng phút
+  - React build vào `screen/dist` làm UI cho Electron
   - Batch gửi JSON lên server
 
 - **Server**: Golang + ClickHouse
@@ -55,14 +56,24 @@ go build -o yoping-server .
 ./yoping-server
 ```
 
-### 3. Chạy client Electron
+### 3. Chạy client Electron (dev)
 ```bash
 cd client
 npm install
-npm run electron:dev
+npm run dev
+```
+- Lệnh này sẽ chạy song song:
+  - `screen:dev`: start React HMR trên `localhost:5173`
+  - `app:dev`: start Electron dev, load HMR
+
+### 4. Build React UI & chạy Electron production
+```bash
+cd client
+npm run screen:build
+npm run app:start
 ```
 
-### 4. Chạy frontend dashboard
+### 5. Chạy frontend dashboard
 ```bash
 cd frontend
 npm install
