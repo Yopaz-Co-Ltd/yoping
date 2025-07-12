@@ -4,14 +4,14 @@
   "description": "Ping it, log it, report it.",
   "main": "main.js",
   "scripts": {
-    "screen:dev": "cd screen && npm run dev",
-    "screen:build": "cd screen && npm install && npm run build",
+    "screen:dev": "cd ../screen && npm run dev",
+    "screen:build": "cd ../screen && npm install && npm run build",
     "app:dev": "cross-env NODE_ENV=development electron .",
     "app:start": "npm run screen:build && electron .",
     "app:build": "electron-builder",
     "start": "electron .",
     "dev": "concurrently \"npm run app:dev\" \"npm run screen:dev\"",
-    "build": "npm run screen:build && npm run app:build"
+    "build": "bash build.sh"
   },
   "author": "Yopaz",
   "license": "ISC",
