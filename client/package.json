@@ -20,5 +20,18 @@
     "cross-env": "^7.0.3",
     "electron": "^37.2.1",
     "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "asar": true,
+    "files": [
+      "main.js",
+      "index.html",
+      "yopingTemplate.png",
+      "yoping.png",
+      "screen/dist/**",
+      "!**/*.map",
+      "!**/test{,s}/**",
+      "!**/src/**"
+    ]
   }
 }

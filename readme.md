@@ -80,6 +80,29 @@ npm install
 npm run dev
 ```
 
+### 6. Giảm kích thước build Electron
+
+Để giảm dung lượng package khi build Electron, sử dụng cấu hình `build` trong
+`client/package.json` với tuỳ chọn `asar` và chỉ đưa vào các file cần thiết:
+
+```json
+"build": {
+  "asar": true,
+  "files": [
+    "main.js",
+    "index.html",
+    "yopingTemplate.png",
+    "yoping.png",
+    "screen/dist/**",
+    "!**/*.map",
+    "!**/test{,s}/**",
+    "!**/src/**"
+  ]
+}
+```
+
+Sau khi cập nhật cấu hình, chạy `npm run build` để tạo bản phát hành tối ưu.
+
 ## ✨ Liên kết
 
 - Github: [https://github.com/Yopaz-Co-Ltd/yoping](https://github.com/Yopaz-Co-Ltd/yoping)
