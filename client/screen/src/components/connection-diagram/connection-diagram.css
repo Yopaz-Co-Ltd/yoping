@@ -1,20 +1,24 @@
 .connection-diagram-container {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  width: 375px;
+  max-width: 375px;
   gap: 40px;
   background-color: black;
-  padding: 30px;
+  padding-top: 30px;
 }
 
 .connection-diagram-container img {
-  width: 35px;
   height: auto;
 }
 
 .list-devices {
   position: relative;
+  width: 100%;
   width: fit-content;
   display: flex;
+  justify-content: space-between;
   gap: 1.5rem;
 }
 .internet-connect-line {
@@ -29,22 +33,25 @@
 .connect-line {
   position: absolute;
   top: calc(50%);
+  left: 50px;
   background: #22485a;
   height: 2px;
-  width: 100%;
+  width: 150%;
 }
 
 .diagram-item {
   position: relative;
-  background-color: #75aecd;
+  background: radial-gradient(circle, #5ba9cc 0%, #5ba9cc 70%, #75bcc9 100%);
   border-radius: 100%;
   width: 50px;
   height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 0.5rem;
-  filter: drop-shadow(0 0 5px #fff);
+  filter: drop-shadow(0 0 3px #fff);
+}
+.diagram-item img {
+  width: 32px;
 }
 
 .device-name {
@@ -56,8 +63,8 @@
 }
 
 .global {
-  width: fit-content;
-  transform: translateX(27%);
+  width: 100%;
+  transform: translateX(16%);
   z-index: 1;
 }
 .global img {
