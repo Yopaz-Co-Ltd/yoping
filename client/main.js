@@ -19,7 +19,7 @@ const createTray = () => {
     if (win) {
       win.isVisible() ? win.hide() : win.show()
     } else {
-      const tailHeight = 10
+      const tailHeight = 0
       win = new BrowserWindow({
         width: 375,
         height: 420 + tailHeight,
