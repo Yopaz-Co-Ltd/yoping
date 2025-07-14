@@ -86,7 +86,7 @@ body {
   cursor: pointer;
 }
 
-.domain {
+.ssid {
   font-size: 12px;
   color: #d0ebf5;
   margin-bottom: 8px;
@@ -94,7 +94,7 @@ body {
   align-items: center;
 }
 
-.domain::before {
+.ssid::before {
   content: '💻';
   margin-right: 6px;
 }
