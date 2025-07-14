@@ -29,46 +29,6 @@ body {
   overflow: hidden;
 }
 
-/* .status-dot {
-  width: 10px;
-  height: 10px;
-  border: 2px solid white;
-  border-radius: 50%;
-  margin-right: 8px;
-}
-
-.status-dot-success {
-  background-color: #00e676;
-}
-
-.status-dot-warning {
-  background-color: #ffeb3b;
-}
-
-.status-dot-error {
-  background-color: #f44336;
-}
-
-.header-container {
-  min-height: 100px;
-  width: 100vw;
-  background: linear-gradient(to right, #004e85, #07718b);
-  display: flex;
-  align-items: center;
-  padding: 0 30px;
-}
-
-.overall-title {
-  font-weight: bold;
-  font-size: 22px;
-  display: flex;
-  align-items: center;
-}
-
-.nubmer-clients {
-  font-size: 14px;
-} */
-
 .container {
   width: 375px;
   margin: 20px auto;
@@ -147,10 +107,14 @@ body {
   color: #dceef4;
 }
 
-canvas {
+.diagram-container {
+  position: relative;
   border-top: 1px solid #ccc;
-  display: block;
   background: #000;
   width: 375px;
-  height: 280px;
+  height: 300px;
+}
+
+canvas {
+  position: absolute;
 }

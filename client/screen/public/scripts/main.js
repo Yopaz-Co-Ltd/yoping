@@ -1,4 +1,4 @@
-const canvas = document.getElementById("connection-diagram");
+const canvas = document.getElementById("device-diagram");
 const ctx = canvas.getContext("2d");
 
 // === Scale theo devicePixelRatio để nét không bị mờ ===
@@ -14,98 +14,98 @@ ctx.scale(dpr, dpr);
 
 // === Vẽ sơ đồ mạng ===
 function drawDevice(x, y, label, number) {
-  ctx.beginPath();
-  ctx.arc(x, y, 30, 0, 2 * Math.PI);
-  ctx.fillStyle = "#1EB8F1";
-  ctx.fill();
+    ctx.beginPath();
+    ctx.arc(x, y, 30, 0, 2 * Math.PI);
+    ctx.fillStyle = "#1EB8F1";
+    ctx.fill();
 
-  ctx.beginPath();
-  ctx.arc(x + 20, y + 20, 12, 0, 2 * Math.PI);
-  ctx.fillStyle = "white";
-  ctx.fill();
-  ctx.fillStyle = "#000";
-  ctx.font = "bold 12px Arial";
-  ctx.textAlign = "center";
-  ctx.fillText(number, x + 20, y + 24);
+    ctx.beginPath();
+    ctx.arc(x + 20, y + 20, 12, 0, 2 * Math.PI);
+    ctx.fillStyle = "white";
+    ctx.fill();
+    ctx.fillStyle = "#000";
+    ctx.font = "bold 12px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText(number, x + 20, y + 24);
 
-  ctx.fillStyle = "#fff";
-  ctx.font = "12px Arial";
-  ctx.textAlign = "center";
-  ctx.fillText(label, x, y + 45);
-}
-
-function drawLink(x1, y1, x2, y2) {
-  ctx.beginPath();
-  ctx.moveTo(x1, y1);
-  ctx.lineTo(x2, y2);
-  ctx.strokeStyle = "#00ffff";
-  ctx.lineWidth = 2;
-  ctx.stroke();
-
-  ctx.font = "16px Arial";
-  ctx.fillStyle = "#00ffff";
-  ctx.textAlign = "center";
-  ctx.fillText("⇄", (x1 + x2) / 2, y1 - 8);
+    ctx.fillStyle = "#fff";
+    ctx.font = "12px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText(label, x, y + 45);
 }
 
 function drawNetwork() {
-  // Biểu tượng mạng trên cùng
-  ctx.beginPath();
-  ctx.arc(80, 30, 12, 0, 2 * Math.PI);
-  ctx.fillStyle = "#007a8e";
-  ctx.fill();
-  ctx.fillStyle = "#00ffff";
-  ctx.font = "16px Arial";
-  ctx.textAlign = "center";
-  ctx.fillText("⌖", 80, 35);
+    // Biểu tượng mạng trên cùng
+    ctx.beginPath();
+    ctx.arc(80, 30, 12, 0, 2 * Math.PI);
+    ctx.fillStyle = "#007a8e";
+    ctx.fill();
+    ctx.fillStyle = "#00ffff";
+    ctx.font = "16px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText("⌖", 80, 35);
 
-  // Dây nối xuống thiết bị
-  ctx.beginPath();
-  ctx.moveTo(80, 42);
-  ctx.lineTo(80, 70);
-  ctx.stroke();
-
-  drawDevice(80, 100, "Trên đầu BOD", 8);
-  drawDevice(190, 100, "Trên đầu web5", 3);
-  drawDevice(300, 100, "Trong phòng họp", 1);
-
-  drawLink(110, 100, 160, 100);
-  drawLink(220, 100, 270, 100);
-  
-  ctx.beginPath(); 
-  ctx.moveTo(80, 42); 
-  ctx.lineTo(80, 70); 
-  ctx.stroke();
+    drawDevice(80, 100, "Trên đầu BOD", 8);
+    drawDevice(190, 100, "Trên đầu web5", 3);
+    drawDevice(300, 100, "Trong phòng họp", 1);
 }
 
 drawNetwork();
 
-// const canvas = document.getElementById('connection-diagram');
-// const ctx = canvas.getContext('2d');
+//Motion
+const motionCanvas = document.getElementById("motion-diagram");
+const motionCtx = motionCanvas.getContext("2d");
+const x = 80;
+const initY = 20;
+const maxY = 70;
+let y = initY;
 
-// canvas.width = 375;
-// canvas.height = 200;
+function drawStreak() {
+    if (!motionCtx || !motionCanvas) return;
 
-// let y = -50;
-// const x = canvas.width / 2;
+    motionCtx.clearRect(x - 2, 0, 4, motionCanvas.height);
+    motionCtx.fillStyle = 'rgba(0, 0, 0, 0.1)';
 
-// function drawStreak() {
-//     if (!ctx || !canvas) return;
+    // Draw streak
+    const gradient = motionCtx.createLinearGradient(x, y + 20, x, y);
+    gradient.addColorStop(0, 'rgba(255,255,255,1)');
+    gradient.addColorStop(1, 'rgba(255,255,255,0)');
+    motionCtx.fillStyle = gradient;
+    motionCtx.fillRect(x - 1, y, 2, 20);
 
-//     ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
-//     ctx.fillRect(0, 0, canvas.width, canvas.height);
+    y += 0.5;
+    if (y > maxY) y = initY;
 
-//     // Draw streak
-//     const gradient = ctx.createLinearGradient(x, y, x, y + 50);
-//     gradient.addColorStop(0, 'rgba(255,255,255,1)');
-//     gradient.addColorStop(1, 'rgba(255,255,255,0)');
-//     ctx.fillStyle = gradient;
-//     ctx.fillRect(x - 1, y, 2, 50);
+    requestAnimationFrame(drawStreak);
+}
+drawStreak();
 
-//     y += 2;
-//     if (y > canvas.height) y = -50;
+//Line
+const lineCanvas = document.getElementById("line-diagram");
+const lineCtx = lineCanvas.getContext("2d");
+function drawLink(x1, y1, x2, y2) {
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.strokeStyle = "#00ffff";
+    ctx.lineWidth = 2;
+    ctx.stroke();
 
-//     requestAnimationFrame(drawStreak);
-// }
+    ctx.font = "16px Arial";
+    ctx.fillStyle = "#00ffff";
+    ctx.textAlign = "center";
+    ctx.fillText("⇄", (x1 + x2) / 2, y1 - 8);
+}
+function drawLine() {
+    // Dây nối xuống thiết bị
+    lineCtx.beginPath();
+    lineCtx.moveTo(80, 42);
+    lineCtx.lineTo(80, 70);
+    lineCtx.strokeStyle = "#00ffff";
+    lineCtx.lineWidth = 2;
+    lineCtx.stroke();
 
-// drawStreak();
+    drawLink(110, 100, 160, 100);
+    drawLink(220, 100, 270, 100);
+}
+drawLine();
