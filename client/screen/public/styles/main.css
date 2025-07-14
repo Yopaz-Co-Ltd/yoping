@@ -29,13 +29,27 @@ body {
   overflow: hidden;
 }
 
+.popover-tail {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 15px solid #f16375;
+}
+
 .container {
   width: 375px;
-  margin: 20px auto;
+  margin: 15px auto;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   background: white;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 }
 
 .status-box {
