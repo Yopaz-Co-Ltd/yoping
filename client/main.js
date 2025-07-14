@@ -2,6 +2,21 @@ console.log('Hello from Electron 👋')
 
 const { app, BrowserWindow, Tray, Menu, screen } = require('electron')
 const path = require('path')
+const wifi = require('node-wifi')
+
+wifi.init({ iface: null })
+
+function sendCurrentSSID() {
+  wifi
+    .getCurrentConnections()
+    .then((conns) => {
+      const ssid = conns && conns[0] ? conns[0].ssid : 'Unknown'
+      if (win && win.webContents) {
+        win.webContents.send('ssid', ssid)
+      }
+    })
+    .catch((err) => console.error('Failed to get SSID', err))
+}
 
 let tray = null
 let win = null
@@ -38,11 +53,12 @@ const createTray = () => {
 
       win.once('ready-to-show', () => {
         const trayBounds = tray.getBounds()
-        const primaryDisplay = screen.getPrimaryDisplay()
         const x = Math.round(trayBounds.x + (trayBounds.width / 2) - (375 / 2))
         const y = Math.round(trayBounds.y + trayBounds.height + 4)
         win.setPosition(x, y)
         win.show()
+        sendCurrentSSID()
+        setInterval(sendCurrentSSID, 60 * 1000)
       })
     }
   })

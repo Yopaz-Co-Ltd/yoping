@@ -3,6 +3,12 @@ const ctx = canvas.getContext("2d");
 const netIcon = document.getElementById("netIcon");
 const routerIcon = document.getElementById("routerIcon");
 const plugIcon = document.getElementById("plugIcon");
+const { ipcRenderer } = require('electron');
+
+ipcRenderer.on('ssid', (_event, ssid) => {
+  const ssidEl = document.querySelector('.ssid');
+  if (ssidEl) ssidEl.textContent = ssid;
+});
 
 // === Scale theo devicePixelRatio để nét không bị mờ ===
 const dpr = window.devicePixelRatio || 1;
