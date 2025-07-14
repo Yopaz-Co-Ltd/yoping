@@ -1,13 +1,45 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+
+<head>
+	<meta charset="UTF-8" />
+	<link rel="icon" type="image/svg+xml" href="/vite.svg" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Yopaz Yoping</title>
+	<link rel="stylesheet" href="./public/styles/main.css">
+</head>
+
+<body>
+	<div class="container">
+		<!-- Phần trạng thái -->
+		<div class="status-box">
+			<div class="status-header">
+				<div class="status-title">
+					<span></span> Network is slow
+				</div>
+				<div class="more-icon">⋮</div>
+			</div>
+
+			<div class="domain">Yopaz.com</div>
+
+			<div class="divider"></div>
+
+			<div class="ping-info">
+				<div class="ping-block">
+					<h2>300 <span style="font-size:14px;">ms</span></h2>
+					<p>Ping nội bộ</p>
+				</div>
+				<div class="ping-block">
+					<h2>Timeout</h2>
+					<p>Ping ra Internet</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Canvas phần dưới -->
+		<canvas id="connection-diagram" width="375" height="300"></canvas>
+	</div>
+</body>
+<script src="./public/scripts/main.js"></script>
+
 </html>

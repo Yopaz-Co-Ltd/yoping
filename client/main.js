@@ -3,8 +3,6 @@ console.log('Hello from Electron 👋')
 const { app, BrowserWindow, Tray, Menu, screen } = require('electron')
 const path = require('path')
 
-const isDev = process.env.NODE_ENV === 'development'
-
 let tray = null
 let win = null
 
@@ -32,11 +30,7 @@ const createTray = () => {
           nodeIntegration: true
         }
       })
-      if (isDev) {
-        win.loadURL('http://localhost:5173')
-      } else {
-        win.loadFile(path.join(__dirname, 'screen/dist/index.html'))
-      }
+      win.loadFile(path.join(__dirname, 'screen/index.html'))
 
       win.on('blur', () => {
         win.hide()
