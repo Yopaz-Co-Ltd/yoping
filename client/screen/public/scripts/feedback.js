@@ -2,8 +2,9 @@
 document.addEventListener('DOMContentLoaded', () => {
   const btn = document.querySelector('.more-icon');
   if (btn) {
-    btn.addEventListener('click', () => {
-      window.electronAPI.openFeedback();
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.electronAPI.showContextMenu();
     });
   }
 });

@@ -1,8 +1,8 @@
 console.log('Hello from Electron 👋')
 
-const { app, BrowserWindow, Tray, Menu, screen } = require('electron')
+const { app, BrowserWindow, Tray, Menu, screen, ipcMain } = require('electron')
 const path = require('path')
-require('./feedbackWindow')
+const { createFeedbackWindow } = require('./feedbackWindow')
 
 let tray = null
 let win = null
@@ -48,6 +48,18 @@ const createTray = () => {
     }
   })
 }
+
+ipcMain.on('show-context-menu', (event) => {
+  const menu = Menu.buildFromTemplate([
+    {
+      label: 'Send Feedback',
+      click: () => createFeedbackWindow()
+    },
+    { label: 'Quit', click: () => app.quit() }
+  ])
+  const win = BrowserWindow.fromWebContents(event.sender)
+  menu.popup({ window: win })
+})
 
 app.whenReady().then(() => {
   if (process.platform === 'darwin') {
