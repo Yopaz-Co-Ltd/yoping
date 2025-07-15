@@ -16,7 +16,7 @@ canvas.style.height = height + "px";
 ctx.scale(dpr, dpr);
 
 // === Vẽ sơ đồ mạng ===
-function drawDevice(x, y, label, number, deviceImg) {
+function drawDevice(x, y, label, deviceImg) {
   // Vẽ hình tròn chính
   ctx.beginPath();
   ctx.arc(x, y, 30, 0, 2 * Math.PI);
@@ -30,16 +30,6 @@ function drawDevice(x, y, label, number, deviceImg) {
       ctx.drawImage(deviceImg, x - 16, y - 16, 32, 32);
     };
   }
-
-  // Vẽ số lượng ở góc dưới phải
-  ctx.beginPath();
-  ctx.arc(x + 20, y + 20, 10, 0, 2 * Math.PI);
-  ctx.fillStyle = "white";
-  ctx.fill();
-  ctx.fillStyle = "#000";
-  ctx.font = "bold 12px Arial";
-  ctx.textAlign = "center";
-  ctx.fillText(number, x + 20, y + 24);
 
   // Vẽ nhãn bên dưới
   ctx.fillStyle = "#fff";
@@ -69,9 +59,9 @@ function drawNetwork() {
   function render() {
     drawIconWithCircle(iconX, iconY, iconRadius, netIcon);
 
-    drawDevice(80, 140, "Trên đầu BOD", 8, routerIcon);
-    drawDevice(190, 140, "Trên đầu web5", 3, routerIcon);
-    drawDevice(300, 140, "Trong phòng họp", 1, routerIcon);
+    drawDevice(80, 140, "Trên đầu BOD", routerIcon);
+    drawDevice(190, 140, "Trên đầu web5", routerIcon);
+    drawDevice(300, 140, "Trong phòng họp", routerIcon);
   }
 
   // Đảm bảo icon đã tải trước khi vẽ
