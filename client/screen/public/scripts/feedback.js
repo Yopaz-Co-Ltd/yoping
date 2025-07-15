@@ -1,10 +1,9 @@
-const { ipcRenderer } = require('electron');
-
+// Use exposed API via preload
 document.addEventListener('DOMContentLoaded', () => {
   const btn = document.querySelector('.more-icon');
   if (btn) {
     btn.addEventListener('click', () => {
-      ipcRenderer.send('open-feedback-window');
+      window.electronAPI.openFeedback();
     });
   }
 });

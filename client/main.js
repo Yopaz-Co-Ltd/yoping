@@ -28,7 +28,9 @@ const createTray = () => {
         alwaysOnTop: true,
         skipTaskbar: true,
         webPreferences: {
-          nodeIntegration: true
+          contextIsolation: true,
+          sandbox: false,
+          preload: path.join(__dirname, './preload.js')
         }
       })
       win.loadFile(path.join(__dirname, 'screen/index.html'))
