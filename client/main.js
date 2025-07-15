@@ -19,7 +19,7 @@ const createTray = () => {
     } else {
       win = new BrowserWindow({
         width: 375,
-        height: 420,
+        height: 440,
         show: false,
         frame: false,
         transparent: true,
