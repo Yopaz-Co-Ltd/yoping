@@ -2,6 +2,7 @@ console.log('Hello from Electron 👋')
 
 const { app, BrowserWindow, Tray, Menu, screen } = require('electron')
 const path = require('path')
+require('./feedbackWindow')
 
 let tray = null
 let win = null
@@ -27,7 +28,9 @@ const createTray = () => {
         alwaysOnTop: true,
         skipTaskbar: true,
         webPreferences: {
-          nodeIntegration: true
+          contextIsolation: true,
+          sandbox: false,
+          preload: path.join(__dirname, './preload.js')
         }
       })
       win.loadFile(path.join(__dirname, 'screen/index.html'))
