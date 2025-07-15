@@ -110,7 +110,7 @@ body {
   height: 14px;
   margin-right: 6px;
   margin-top: 2px;
-  background-image: url('/client/screen/public/images/laptop.svg');
+  background-image: url('../images/laptop.svg');
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
