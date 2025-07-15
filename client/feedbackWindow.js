@@ -3,8 +3,8 @@ const path = require('path');
 
 function createFeedbackWindow() {
   const win = new BrowserWindow({
-    width: 400,
-    height: 300,
+    width: 670,
+    height: 360,
     resizable: false,
     show: true
   });

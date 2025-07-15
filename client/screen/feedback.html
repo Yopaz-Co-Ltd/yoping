@@ -2,32 +2,40 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <title>Feedback</title>
-  <link rel="stylesheet" href="./public/styles/main.css">
-  <style>
-    body { background: #000; color: #fff; padding: 20px; }
-    .form-group { margin-bottom: 12px; }
-    label { display: block; margin-bottom: 4px; }
-    input { width: 100%; padding: 4px; }
-  </style>
+  <title>Phản hồi</title>
+	<link rel="stylesheet" href="./public/styles/feedback.css">
 </head>
 <body>
-  <div class="feedback-form">
+  <div class="preferences">
+    <div class="description">
+      Trung tâm hỗ trợ của chúng tôi thường xuyên được cập nhật với các câu trả lời cho những câu hỏi phổ biến.
+    </div>
+
     <div class="form-group">
-      <label for="issue">Vấn đề</label>
+      <label for="issue">Vấn đề:</label>
       <input id="issue" type="text" placeholder="Tình trạng mạng gặp phải" />
     </div>
     <div class="form-group">
-      <label for="location">Vị trí</label>
-      <input id="location" type="text" placeholder="Sử dụng ở khu vực nào" />
+      <label for="location">Vị trí:</label>
+      <input id="location" type="text" placeholder="Bạn đang sử dụng ở khu vực nào?" />
     </div>
     <div class="form-group">
-      <label for="network">Mạng sử dụng</label>
-      <input id="network" type="text" placeholder="Tên mạng đang sử dụng" />
+      <label for="network">Mạng sử dụng:</label>
+      <input id="network" type="text" value="Yopaz_WiFi" />
     </div>
     <div class="form-group">
-      <label for="type">Loại kết nối</label>
-      <input id="type" type="text" placeholder="wifi/dây" />
+      <label for="type">Loại kết nối:</label>
+      <input id="type" type="text" value="WiFi" />
+    </div>
+
+    <div class="actions">
+      <div class="note warning-note">
+        <svg xmlns="http://www.w3.org/2000/svg" class="warning-icon" viewBox="0 0 24 24" width="16" height="16" fill="#FFA500">
+          <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+        </svg>
+        <span>Phản hồi sẽ được gửi khi có kết nối mạng.</span>
+      </div>
+      <button class="primary">Gửi phản hồi</button>
     </div>
   </div>
 </body>
