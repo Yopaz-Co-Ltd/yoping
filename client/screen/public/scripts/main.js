@@ -3,6 +3,10 @@ const ctx = canvas.getContext("2d");
 const netIcon = document.getElementById("netIcon");
 const routerIcon = document.getElementById("routerIcon");
 const plugIcon = document.getElementById("plugIcon");
+const macIcon = document.getElementById('macIcon');
+const windowsIcon = document.getElementById('windowsIcon');
+const linuxIcon = document.getElementById('linuxIcon');
+
 
 // === Scale theo devicePixelRatio để nét không bị mờ ===
 const dpr = window.devicePixelRatio || 1;
@@ -51,7 +55,7 @@ function drawIconWithCircle(x, y, radius, iconImg, iconSize = 26, circleColor = 
   ctx.drawImage(iconImg, x - iconSize / 2, y - iconSize / 2, iconSize, iconSize);
 }
 
-function drawNetwork() {
+function drawNetwork(userDeviceIcon) {
   const iconX = 80;
   const iconY = 30;
   const iconRadius = 15;
@@ -61,7 +65,7 @@ function drawNetwork() {
 
     drawDevice(80, 140, "Trên đầu BOD", routerIcon);
     drawDevice(190, 140, "Trên đầu web5", routerIcon);
-    drawDevice(300, 140, "Trong phòng họp", routerIcon);
+    drawDevice(300, 140, "Máy của tôi", userDeviceIcon);
   }
 
   // Đảm bảo icon đã tải trước khi vẽ
@@ -71,7 +75,21 @@ function drawNetwork() {
     netIcon.onload = render;
   }
 }
-drawNetwork();
+
+async function getDeviceInformation() {
+  const { device } = await window.electronAPI.getDeviceInfo();
+  const os = device.os;
+
+  const osIcon =
+    os === 'windows' ? windowsIcon :
+    os === 'linux'   ? linuxIcon   :
+    os === 'mac' ? macIcon : 
+    routerIcon;
+
+  drawNetwork(osIcon);
+}
+
+getDeviceInformation();
 
 //Motion
 const motionCanvas = document.getElementById("motion-diagram");
