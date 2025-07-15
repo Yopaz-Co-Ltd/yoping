@@ -55,14 +55,14 @@ body {
 .status-box {
   background: linear-gradient(to bottom, #f16375, #fca53a);
   color: white;
-  padding: 16px;
+  padding: 18px;
 }
 
 .status-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  margin-top: 10px;
 }
 
 .status-title {
@@ -74,33 +74,51 @@ body {
 
 .status-title span {
   display: inline-block;
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   background-color: yellow;
   border-radius: 50%;
   margin-right: 8px;
+  margin-left: 2px;
+  border: 1px solid white;
+}
+
+.status-title h2 {
+  margin-bottom: 0px;
+  margin-top: 0px;
+  font-size: 18px;
 }
 
 .more-icon {
-  font-size: 18px;
+  font-size: 20px;
   cursor: pointer;
+  font-weight: 800;
+  padding: 2px 10px;
 }
 
 .ssid {
-  font-size: 12px;
-  color: #d0ebf5;
-  margin-bottom: 8px;
+  font-size: 14px;
+  margin-bottom: 10px;
   display: flex;
   align-items: center;
 }
 
 .ssid::before {
-  content: '💻';
+  content: '';
+  display: inline-block;
+  width: 14px;
+  height: 14px;
   margin-right: 6px;
+  margin-top: 2px;
+  background-image: url('/client/screen/public/images/laptop.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  vertical-align: middle;
 }
 
 .divider {
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-top: 1px solid rgba(136, 136, 136, 0.6);
   margin: 8px 0;
 }
 
@@ -108,22 +126,21 @@ body {
   display: flex;
   justify-content: space-between;
   text-align: center;
+  padding: 10px;
 }
 
 .ping-block h2 {
   margin: 0;
-  font-size: 20px;
+  font-size: 25px;
 }
 
 .ping-block p {
-  margin: 2px 0 0 0;
-  font-size: 12px;
-  color: #dceef4;
+  margin: -2px;
+  font-size: 14px;
 }
 
 .diagram-container {
   position: relative;
-  border-top: 1px solid #ccc;
   background: #000;
   width: 375px;
   height: 300px;
