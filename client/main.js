@@ -28,8 +28,6 @@ const createTray = () => {
         alwaysOnTop: true,
         skipTaskbar: true,
         webPreferences: {
-          contextIsolation: true,
-          sandbox: false,
           preload: path.join(__dirname, './preload.js')
         }
       })

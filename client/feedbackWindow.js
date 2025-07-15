@@ -6,10 +6,7 @@ function createFeedbackWindow() {
     width: 400,
     height: 300,
     resizable: false,
-    show: true,
-    webPreferences: {
-      nodeIntegration: true
-    }
+    show: true
   });
   win.loadFile(path.join(__dirname, 'screen/feedback.html'));
 }
