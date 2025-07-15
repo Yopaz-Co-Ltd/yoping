@@ -70,6 +70,7 @@ body {
   align-items: center;
   font-size: 14px;
   font-weight: bold;
+  margin-top: 5px;
 }
 
 .status-title span {
@@ -90,15 +91,15 @@ body {
 }
 
 .more-icon {
-  font-size: 20px;
   cursor: pointer;
   font-weight: 800;
-  padding: 2px 10px;
+  padding: 2px 5px;
+  margin-bottom: 16px;
 }
 
 .ssid {
   font-size: 14px;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   display: flex;
   align-items: center;
 }
@@ -131,12 +132,16 @@ body {
 
 .ping-block h2 {
   margin: 0;
-  font-size: 25px;
+  font-size: 26px;
 }
 
 .ping-block p {
-  margin: -2px;
+  margin: -3px;
   font-size: 14px;
+}
+
+.ping-info .timeout {
+  padding-right: 50px;
 }
 
 .diagram-container {
@@ -144,6 +149,7 @@ body {
   background: #000;
   width: 375px;
   height: 300px;
+  padding-top: 10px;
 }
 
 canvas {
