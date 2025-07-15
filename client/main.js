@@ -2,6 +2,7 @@ console.log('Hello from Electron 👋')
 
 const { app, BrowserWindow, Tray, Menu, screen } = require('electron')
 const path = require('path')
+require('./feedbackWindow')
 
 let tray = null
 let win = null
