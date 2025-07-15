@@ -76,26 +76,57 @@ drawNetwork();
 //Motion
 const motionCanvas = document.getElementById("motion-diagram");
 const motionCtx = motionCanvas.getContext("2d");
-const x = 80;
-const initY = 10;
-const maxY = 100;
-let y = initY;
+
+const startLightColor = 'rgba(76,221,252,1)';
+const endLightColor = 'rgba(76,221,252,0)';
+
+const light1InitX = 80;
+const light1InitY = 10;
+const light1MaxY = 100;
+let p1 = light1InitY;
+
+// New horizontal streaks
+const light2InitX = 70;
+const light2InitY = 140;
+const light2MaxX = 160;
+let p2 = light2InitX;
+
+const light3InitX = 180;
+const light3InitY = 140;
+const light3MaxX = 270;
+let p3 = light3InitX;
 
 function drawMotion() {
   if (!motionCtx || !motionCanvas) return;
 
-  motionCtx.clearRect(x - 2, 0, 4, motionCanvas.height);
-  motionCtx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+  motionCtx.clearRect(0, 0, motionCanvas.width, motionCanvas.height);
 
-  // Draw streak
-  const gradient = motionCtx.createLinearGradient(x, y + 30, x, y);
-  gradient.addColorStop(0, 'rgba(255,255,255,1)');
-  gradient.addColorStop(1, 'rgba(255,255,255,0)');
-  motionCtx.fillStyle = gradient;
-  motionCtx.fillRect(x - 1, y, 2, 30);
+  // Vertical streak
+  const vGradient = motionCtx.createLinearGradient(light1InitX, p1 + 30, light1InitX, p1);
+  vGradient.addColorStop(0, startLightColor);
+  vGradient.addColorStop(1, endLightColor);
+  motionCtx.fillStyle = vGradient;
+  motionCtx.fillRect(light1InitX - 1, p1, 2, 30);
+  p1 += 0.8;
+  if (p1 > light1MaxY) p1 = light1InitY;
 
-  y += 0.8;
-  if (y > maxY) y = initY;
+  // Horizontal streak 1
+  const hGradient1 = motionCtx.createLinearGradient(p2, light2InitY, p2 + 30, light2InitY);
+  hGradient1.addColorStop(0, endLightColor);
+  hGradient1.addColorStop(1, startLightColor);
+  motionCtx.fillStyle = hGradient1;
+  motionCtx.fillRect(p2, light2InitY - 1, 30, 2);
+  p2 += 0.8;
+  if (p2 > light2MaxX) p2 = light2InitX;
+
+  // Horizontal streak 2
+  const hGradient2 = motionCtx.createLinearGradient(p3, light3InitY, p3 + 30, light3InitY);
+  hGradient2.addColorStop(0, endLightColor);
+  hGradient2.addColorStop(1, startLightColor);
+  motionCtx.fillStyle = hGradient2;
+  motionCtx.fillRect(p3, light3InitY - 1, 30, 2);
+  p3 += 0.8;
+  if (p3 > light3MaxX) p3 = light3InitX;
 
   requestAnimationFrame(drawMotion);
 }
