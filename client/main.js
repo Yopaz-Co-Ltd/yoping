@@ -3,7 +3,7 @@ console.log('Hello from Electron 👋')
 const { app, BrowserWindow, Tray, Menu, screen, ipcMain, Notification } = require('electron')
 const path = require('path')
 const { createFeedbackWindow } = require('./feedbackWindow')
-const { getConnectionType } = require('./utils/network');
+const { getNetwordInfo } = require('./utils/network');
 
 let tray = null
 let win = null
@@ -76,7 +76,7 @@ const createTray = () => {
         }
       })
       win.loadFile(path.join(__dirname, 'screen/index.html'))
-      // win.webContents.openDevTools({mode: 'detach'})
+      win.webContents.openDevTools({mode: 'detach'})
 
       win.on('blur', () => {
         win.hide()
@@ -107,40 +107,33 @@ ipcMain.on('show-context-menu', (event) => {
 })
 
 const handleNetworkStatus = () => {
-  const statuses = ['GOOD', 'SLOW', 'OFFLINE'];
-  let currentIndex = 0;
-  if(statuses[currentIndex] === 'OFFLINE')
-    showNotification();
-
-  BrowserWindow.getAllWindows().forEach(window => {
-    window.webContents.send('network-status-update', statuses[currentIndex]);
-  });
+  sendNetworkInfo();
 
   setInterval(() => {
-    currentIndex = (currentIndex + 1) % statuses.length;
-    if(statuses[currentIndex] === 'OFFLINE')
-      showNotification();
-    BrowserWindow.getAllWindows().forEach(window => {
-      window.webContents.send('network-status-update', statuses[currentIndex]);
-    });
+    sendNetworkInfo();
   }, 5000);
+};
+
+const sendNetworkInfo = () => {
+  getNetwordInfo().then(async (value) => {
+    console.log('Network info:', value);
+    BrowserWindow.getAllWindows().forEach(window => {
+      window.webContents.send('network-status-update', value);
+    });
+  });
 };
 
 app.whenReady().then(() => {
   if (process.platform === 'darwin') {
     app.dock.hide()
   }
-
-  ipcMain.handle('get-connection-type', async () => {
-    return getConnectionType();
-  });
   
   ipcMain.handle('get-device-info', () => {
     return getOSInfo();
   });
 
   ipcMain.on('get-network-info', () => {
-    handleNetworkStatus();
+    return handleNetworkStatus();
   });
 
   createTray();
