@@ -5,6 +5,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   showContextMenu: () => ipcRenderer.send('show-context-menu'),
   getConnectionType: () => ipcRenderer.invoke('get-connection-type'),
   getDeviceInfo: () => ipcRenderer.invoke('get-device-info'),
+  getNetWorkInfo: () => ipcRenderer.send('get-network-info'),
+  onNetworkStatusUpdate: (callback) => ipcRenderer.on('network-status-update', (_event, status) => callback(status))
 });
 
 console.log('✅ preload script loaded');

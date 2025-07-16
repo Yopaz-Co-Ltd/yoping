@@ -1,3 +1,5 @@
+import { updateUI } from './statusUpdater.js';
+
 const canvas = document.getElementById("device-diagram");
 const ctx = canvas.getContext("2d");
 const netIcon = document.getElementById("netIcon");
@@ -187,6 +189,9 @@ function drawLine() {
 }
 drawLine();
 
+window.electronAPI.getNetWorkInfo();
+
+window.electronAPI.onNetworkStatusUpdate((value) => updateUI(value));
 // Get connection type
 async function getConnectionType() {
   const type = await window.electronAPI.getConnectionType();

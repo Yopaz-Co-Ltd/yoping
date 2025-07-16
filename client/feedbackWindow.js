@@ -6,7 +6,10 @@ function createFeedbackWindow() {
     width: 670,
     height: 400,
     resizable: false,
-    show: true
+    show: true,
+     webPreferences: {
+      preload: path.join(__dirname, 'preload.js')
+    }
   });
   win.loadFile(path.join(__dirname, 'screen/feedback.html'));
 }

@@ -1,10 +1,12 @@
 <!doctype html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8" />
   <title>Phản hồi</title>
-	<link rel="stylesheet" href="./public/styles/feedback.css">
+  <link rel="stylesheet" href="./public/styles/feedback.css">
 </head>
+
 <body>
   <div class="preferences">
     <div class="description">
@@ -33,24 +35,34 @@
 
     <div class="actions">
       <div class="note error-note">
-        <svg xmlns="http://www.w3.org/2000/svg" class="error-icon" viewBox="0 0 24 24" width="16" height="16" fill="#FF4C4C">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 15h-1v-1h2v1h-1zm0-3h-1V7h2v7h-1z"/>
+        <svg xmlns="http://www.w3.org/2000/svg" class="error-icon" viewBox="0 0 24 24" width="16" height="16"
+          fill="#FF4C4C">
+          <path
+            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 15h-1v-1h2v1h-1zm0-3h-1V7h2v7h-1z" />
         </svg>
-        <span>Không có mạng.  Bạn có thể nhờ người khác gửi phản hồi giúp.</span>
+        <span>Không có mạng. Bạn có thể nhờ người khác gửi phản hồi giúp.</span>
       </div>
-      <button class="primary">Gửi phản hồi</button>
+      <button class="primary" id="send-button">Gửi phản hồi</button>
     </div>
   </div>
-  <!-- <button id="toggleNetworkStatus">Bật/Tắt mạng</button> -->
 </body>
-<!-- <script>
+<script>
   document.addEventListener('DOMContentLoaded', () => {
-      const toggleButton = document.getElementById('toggleNetworkStatus');
-      const targetElement = document.body;
+    const targetElement = document.body;
+    const sendButton = document.getElementById('send-button');
 
-      toggleButton.addEventListener('click', () => {
-          targetElement.classList.toggle('network-offline');
-      });
+    window.electronAPI.onNetworkStatusUpdate((status) => {
+      console.log('Trạng thái mạng nhận được:', status);
+
+      if (status === 'OFFLINE') {
+        targetElement.classList.add('network-offline');
+        sendButton.disabled = true;
+      } else {
+        targetElement.classList.remove('network-offline');
+        sendButton.disabled = false;
+      }
+    });
   });
-</script> -->
+</script>
+
 </html>
