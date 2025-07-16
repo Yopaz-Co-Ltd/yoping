@@ -186,3 +186,12 @@ function drawLine() {
   drawLink(220, 140, 270, 140);
 }
 drawLine();
+
+// Get connection type
+async function getConnectionType() {
+  const type = await window.electronAPI.getConnectionType();
+  console.log('✅ Kết nối hiện tại:', type);
+  //set element.....
+}
+
+getConnectionType();
