@@ -56,9 +56,14 @@ body {
 
 .actions {
   display: flex;
-  justify-content: space-between;
+  align-items: center;
   gap: 10px;
   margin-top: 20px;
+  justify-content: flex-end;
+}
+
+.actions.has-error {
+  justify-content: space-between;
 }
 
 button {
@@ -84,8 +89,8 @@ button:hover {
   opacity: 0.9;
 }
 
-.warning-note {
-  display: flex;
+.error-note {
+  display: none;
   align-items: center;
   font-size: 13px;
   padding: 3px 0px;
@@ -93,7 +98,24 @@ button:hover {
   font-weight: 500;
 }
 
-.warning-note .warning-icon {
+.error-note .error-icon {
   margin-right: 6px;
   flex-shrink: 0;
+}
+
+body.network-offline .error-note,
+.actions.network-offline .error-note {
+  display: flex;
+}
+
+body.network-offline .actions .primary,
+.actions.network-offline .primary {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+body.network-offline .actions,
+.actions.network-offline {
+  justify-content: space-between;
 }

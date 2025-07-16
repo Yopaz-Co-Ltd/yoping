@@ -10,7 +10,10 @@
     <div class="description">
       Trung tâm hỗ trợ của chúng tôi thường xuyên được cập nhật với các câu trả lời cho những câu hỏi phổ biến.
     </div>
-
+    <div class="form-group">
+      <label for="usename">Người phản hồi:</label>
+      <input id="usename" type="text" placeholder="Nhập tên người phản hồi" />
+    </div>
     <div class="form-group">
       <label for="issue">Vấn đề:</label>
       <input id="issue" type="text" placeholder="Tình trạng mạng gặp phải" />
@@ -21,22 +24,33 @@
     </div>
     <div class="form-group">
       <label for="network">Mạng sử dụng:</label>
-      <input id="network" type="text" value="Yopaz_WiFi" />
+      <input id="network" type="text" placeholder="Yopaz.com" value="Yopaz_WiFi" />
     </div>
     <div class="form-group">
       <label for="type">Loại kết nối:</label>
-      <input id="type" type="text" value="WiFi" />
+      <input id="type" type="text" placeholder="WiFi / Dây" value="WiFi" />
     </div>
 
     <div class="actions">
-      <div class="note warning-note">
-        <svg xmlns="http://www.w3.org/2000/svg" class="warning-icon" viewBox="0 0 24 24" width="16" height="16" fill="#FFA500">
-          <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+      <div class="note error-note">
+        <svg xmlns="http://www.w3.org/2000/svg" class="error-icon" viewBox="0 0 24 24" width="16" height="16" fill="#FF4C4C">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 15h-1v-1h2v1h-1zm0-3h-1V7h2v7h-1z"/>
         </svg>
-        <span>Phản hồi sẽ được gửi khi có kết nối mạng.</span>
+        <span>Không có mạng.  Bạn có thể nhờ người khác gửi phản hồi giúp.</span>
       </div>
       <button class="primary">Gửi phản hồi</button>
     </div>
   </div>
+  <!-- <button id="toggleNetworkStatus">Bật/Tắt mạng</button> -->
 </body>
+<!-- <script>
+  document.addEventListener('DOMContentLoaded', () => {
+      const toggleButton = document.getElementById('toggleNetworkStatus');
+      const targetElement = document.body;
+
+      toggleButton.addEventListener('click', () => {
+          targetElement.classList.toggle('network-offline');
+      });
+  });
+</script> -->
 </html>
