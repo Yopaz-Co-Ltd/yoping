@@ -8,6 +8,30 @@ const { getConnectionType } = require('./utils/network');
 let tray = null
 let win = null
 
+const getOSInfo = () => {
+  let osName;
+
+  switch (process.platform) {
+    case 'darwin': // macOS
+      osName = 'mac';
+      break;
+    case 'win32': // Windows
+      osName = 'windows';
+      break;
+    case 'linux': // Linux
+      osName = 'linux';
+      break;
+    default:
+      osName = 'unknown';
+  }
+  return {
+    device: {
+      os: osName
+    }
+  };
+};
+
+
 const createTray = () => {
   tray = new Tray(path.join(__dirname, 'yopingTemplate.png'))
   const contextMenu = Menu.buildFromTemplate([
@@ -33,6 +57,7 @@ const createTray = () => {
         }
       })
       win.loadFile(path.join(__dirname, 'screen/index.html'))
+      // win.webContents.openDevTools({mode: 'detach'})
 
       win.on('blur', () => {
         win.hide()
@@ -69,6 +94,10 @@ app.whenReady().then(() => {
 
   ipcMain.handle('get-connection-type', async () => {
     return getConnectionType();
+  });
+  
+  ipcMain.handle('get-device-info', () => {
+    return getOSInfo();
   });
 
   createTray()
