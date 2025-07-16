@@ -77,10 +77,10 @@ const createTray = () => {
 ipcMain.on('show-context-menu', (event) => {
   const menu = Menu.buildFromTemplate([
     {
-      label: 'Send Feedback',
+      label: 'Gửi phản hồi',
       click: () => createFeedbackWindow()
     },
-    { label: 'Quit', click: () => app.quit() }
+    { label: 'Thoát', click: () => app.quit() }
   ])
   const win = BrowserWindow.fromWebContents(event.sender)
   menu.popup({ window: win })

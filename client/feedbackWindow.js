@@ -4,7 +4,7 @@ const path = require('path');
 function createFeedbackWindow() {
   const win = new BrowserWindow({
     width: 670,
-    height: 360,
+    height: 400,
     resizable: false,
     show: true
   });
