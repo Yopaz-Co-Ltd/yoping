@@ -1,12 +1,31 @@
 console.log('Hello from Electron 👋')
 
-const { app, BrowserWindow, Tray, Menu, screen, ipcMain } = require('electron')
+const { app, BrowserWindow, Tray, Menu, screen, ipcMain, Notification } = require('electron')
 const path = require('path')
 const { createFeedbackWindow } = require('./feedbackWindow')
 const { getConnectionType } = require('./utils/network');
 
 let tray = null
 let win = null
+
+const NOTIFICATION_TITLE = 'Mất kết nối mạng';
+const NOTIFICATION_BODY = 'Ứng dụng không thể kết nối tới mạng công ty. Vui lòng kiểm tra kết nối Internet.';
+const CLICK_MESSAGE = 'Nhấn thông báo!'
+
+function showNotification () {
+  console.log('🟢 Gửi thông báo...');
+
+  const notification = new Notification({
+    title: NOTIFICATION_TITLE,
+    body: NOTIFICATION_BODY,
+  });
+
+  notification.show();
+
+  notification.on('click', () => {
+    console.log(CLICK_MESSAGE);
+  });
+}
 
 const getOSInfo = () => {
   let osName;
@@ -90,6 +109,8 @@ ipcMain.on('show-context-menu', (event) => {
 const handleNetworkStatus = () => {
   const statuses = ['GOOD', 'SLOW', 'OFFLINE'];
   let currentIndex = 0;
+  if(statuses[currentIndex] === 'OFFLINE')
+    showNotification();
 
   BrowserWindow.getAllWindows().forEach(window => {
     window.webContents.send('network-status-update', statuses[currentIndex]);
@@ -97,6 +118,8 @@ const handleNetworkStatus = () => {
 
   setInterval(() => {
     currentIndex = (currentIndex + 1) % statuses.length;
+    if(statuses[currentIndex] === 'OFFLINE')
+      showNotification();
     BrowserWindow.getAllWindows().forEach(window => {
       window.webContents.send('network-status-update', statuses[currentIndex]);
     });
@@ -120,5 +143,5 @@ app.whenReady().then(() => {
     handleNetworkStatus();
   });
 
-  createTray()
+  createTray();
 })
