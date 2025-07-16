@@ -9,22 +9,15 @@ let tray = null
 let win = null
 
 const NOTIFICATION_TITLE = 'Mất kết nối mạng';
-const NOTIFICATION_BODY = 'Ứng dụng không thể kết nối tới mạng công ty. Vui lòng kiểm tra kết nối Internet.';
-const CLICK_MESSAGE = 'Nhấn thông báo!'
+const NOTIFICATION_BODY = 'Vui lòng kiểm tra kết nối Internet.';
 
 function showNotification () {
-  console.log('🟢 Gửi thông báo...');
-
   const notification = new Notification({
     title: NOTIFICATION_TITLE,
     body: NOTIFICATION_BODY,
   });
 
   notification.show();
-
-  notification.on('click', () => {
-    console.log(CLICK_MESSAGE);
-  });
 }
 
 const getOSInfo = () => {
