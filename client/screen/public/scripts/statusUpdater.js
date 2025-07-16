@@ -9,6 +9,12 @@ export function updateUI(statusCode) {
   const statusText = statusBox.querySelector('.status-text');
   const popoverTail = document.querySelector('.popover-tail');
 
+  // Remove gradient to start fade out
+  statusBox.classList.remove('gradient-active');
+  // Force reflow so opacity transition starts
+  void statusBox.offsetWidth;
+
+  // Remove previous status classes
   statusBox.classList.remove('network-good', 'network-slow', 'network-offline');
   popoverTail.classList.remove('network-good', 'network-slow', 'network-offline');
 
@@ -35,4 +41,8 @@ export function updateUI(statusCode) {
   if (statusText) statusText.textContent = text;
   if (statusBox) statusBox.classList.add(className);
   if (popoverTail) popoverTail.classList.add(className);
+
+  // Reflow again before fading in new gradient
+  void statusBox.offsetWidth;
+  statusBox.classList.add('gradient-active');
 }
