@@ -168,3 +168,7 @@ function drawLine() {
   drawLink(220, 140, 270, 140);
 }
 drawLine();
+
+window.electronAPI.getConnectionType().then(type => {
+  console.log('✅ Kết nối hiện tại:', type);
+});
