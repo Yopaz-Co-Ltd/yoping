@@ -3,6 +3,7 @@ console.log('Hello from Electron 👋')
 const { app, BrowserWindow, Tray, Menu, screen, ipcMain } = require('electron')
 const path = require('path')
 const { createFeedbackWindow } = require('./feedbackWindow')
+const { getConnectionType } = require('./utils/network');
 
 let tray = null
 let win = null
@@ -107,6 +108,10 @@ app.whenReady().then(() => {
     app.dock.hide()
   }
 
+  ipcMain.handle('get-connection-type', async () => {
+    return getConnectionType();
+  });
+  
   ipcMain.handle('get-device-info', () => {
     return getOSInfo();
   });

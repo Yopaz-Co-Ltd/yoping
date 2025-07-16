@@ -192,3 +192,11 @@ drawLine();
 window.electronAPI.getNetWorkInfo();
 
 window.electronAPI.onNetworkStatusUpdate((value) => updateUI(value));
+// Get connection type
+async function getConnectionType() {
+  const type = await window.electronAPI.getConnectionType();
+  console.log('✅ Kết nối hiện tại:', type);
+  //set element.....
+}
+
+getConnectionType();
