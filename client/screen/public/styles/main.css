@@ -65,8 +65,20 @@ body {
 }
 
 .status-box {
+  position: relative;
   color: white;
   padding: 18px;
+}
+
+.status-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 0.4s ease;
 }
 
 .status-header {
@@ -99,11 +111,19 @@ body {
   background: linear-gradient(to bottom, #007EAC, #00547a);
 }
 
+.status-box.network-good::before {
+  background: linear-gradient(to bottom, #007EAC, #00547a);
+}
+
 .status-box.network-good .status-indicator {
   background-color: #00BF63;
 }
 
 .status-box.network-slow {
+  background: linear-gradient(to bottom, #fca53a, #f16375);
+}
+
+.status-box.network-slow::before {
   background: linear-gradient(to bottom, #fca53a, #f16375);
 }
 
@@ -113,6 +133,14 @@ body {
 
 .status-box.network-offline {
   background: linear-gradient(to bottom, #C1356D, #f08977);
+}
+
+.status-box.network-offline::before {
+  background: linear-gradient(to bottom, #C1356D, #f08977);
+}
+
+.status-box.gradient-active::before {
+  opacity: 1;
 }
 
 .status-box.network-offline .status-indicator {

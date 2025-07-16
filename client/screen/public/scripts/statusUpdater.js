@@ -9,7 +9,7 @@ export function updateUI(statusCode) {
   const statusText = statusBox.querySelector('.status-text');
   const popoverTail = document.querySelector('.popover-tail');
 
-  statusBox.classList.remove('network-good', 'network-slow', 'network-offline');
+  statusBox.classList.remove('network-good', 'network-slow', 'network-offline', 'gradient-active');
   popoverTail.classList.remove('network-good', 'network-slow', 'network-offline');
 
   let text = "", className = "";
@@ -33,6 +33,10 @@ export function updateUI(statusCode) {
   }
 
   if (statusText) statusText.textContent = text;
-  if (statusBox) statusBox.classList.add(className);
+  if (statusBox) {
+    statusBox.classList.add(className);
+    void statusBox.offsetWidth;
+    statusBox.classList.add('gradient-active');
+  }
   if (popoverTail) popoverTail.classList.add(className);
 }
