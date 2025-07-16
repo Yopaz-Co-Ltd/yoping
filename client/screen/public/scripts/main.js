@@ -5,6 +5,7 @@ const ctx = canvas.getContext("2d");
 const netIcon = document.getElementById("netIcon");
 const routerIcon = document.getElementById("routerIcon");
 const plugIcon = document.getElementById("plugIcon");
+const wifiIcon = document.getElementById("wifiIcon");
 const macIcon = document.getElementById('macIcon');
 const windowsIcon = document.getElementById('windowsIcon');
 const linuxIcon = document.getElementById('linuxIcon');
@@ -155,7 +156,7 @@ drawMotion();
 //Line
 const lineCanvas = document.getElementById("line-diagram");
 const lineCtx = lineCanvas.getContext("2d");
-function drawLink(x1, y1, x2, y2) {
+function drawLink(x1, y1, x2, y2, type='ethernet') {
   lineCtx.beginPath();
   lineCtx.moveTo(x1, y1);
   lineCtx.lineTo(x2, y2);
@@ -166,13 +167,24 @@ function drawLink(x1, y1, x2, y2) {
   const centerX = (x1 + x2) / 2;
   const centerY = y1 - 12;
   const iconSize = 13;
+  const iconWifiSize = 16;
 
-  if (plugIcon && plugIcon.complete) {
-    lineCtx.drawImage(plugIcon, centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
-  } else if (plugIcon) {
-    plugIcon.onload = () => {
+  if (type == 'ethernet') {
+    if (plugIcon && plugIcon.complete) {
       lineCtx.drawImage(plugIcon, centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
-    };
+    } else if (plugIcon) {
+      plugIcon.onload = () => {
+        lineCtx.drawImage(plugIcon, centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
+      };
+    }
+  } else {
+    if (wifiIcon && wifiIcon.complete) {
+      lineCtx.drawImage(wifiIcon, centerX - iconWifiSize / 2, centerY - iconWifiSize / 1.5, iconWifiSize, iconWifiSize);
+    } else if (wifiIcon) {
+      wifiIcon.onload = () => {
+        lineCtx.drawImage(wifiIcon, centerX - iconWifiSize / 2, centerY - iconWifiSize / 1.5, iconWifiSize, iconWifiSize);
+      };
+    }
   }
 }
 function drawLine() {
@@ -185,7 +197,7 @@ function drawLine() {
   lineCtx.stroke();
 
   drawLink(110, 140, 160, 140);
-  drawLink(220, 140, 270, 140);
+  drawLink(220, 140, 270, 140, 'wifi');
 }
 drawLine();
 
