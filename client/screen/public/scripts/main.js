@@ -1,3 +1,5 @@
+import { updateUI } from './statusUpdater.js';
+
 const canvas = document.getElementById("device-diagram");
 const ctx = canvas.getContext("2d");
 const netIcon = document.getElementById("netIcon");
@@ -186,3 +188,7 @@ function drawLine() {
   drawLink(220, 140, 270, 140);
 }
 drawLine();
+
+window.electronAPI.getNetWorkInfo();
+
+window.electronAPI.onNetworkStatusUpdate((value) => updateUI(value));

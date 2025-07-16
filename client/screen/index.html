@@ -17,7 +17,7 @@
 			<div class="status-header">
 				<div>
 					<div class="status-title">
-						<span class="status-indicator"></span> <h2 class="status-text"></h2>
+						<span class="status-indicator"></span> <h2 class="status-text">Đang kiểm tra kết nối...</h2>
 					</div>
 					<div class="ssid">{{ ssid }}</div>
 				</div>
@@ -61,56 +61,6 @@
 		</div>
 	</div>
 </body>
-<script src="./public/scripts/main.js"></script>
+<script type="module" src="./public/scripts/main.js"></script>
 <script src="./public/scripts/feedback.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const statusBox = document.querySelector('.status-box');
-    const statusIndicator = statusBox.querySelector('.status-indicator');
-    const statusText = statusBox.querySelector('.status-text');
-	const popoverTail = document.querySelector('.popover-tail');
-
-    const NETWORK_STATUS_STATES = {
-        GOOD: 'good',
-        SLOW: 'slow',
-        OFFLINE: 'offline'
-    };
-
-    const statusOrder = [
-        NETWORK_STATUS_STATES.GOOD,
-        NETWORK_STATUS_STATES.SLOW,
-        NETWORK_STATUS_STATES.OFFLINE
-    ];
-
-    function updateNetworkStatusUI(status) {
-        statusBox.classList.remove('network-good', 'network-slow', 'network-offline');
-		popoverTail.classList.remove('network-good', 'network-slow', 'network-offline');
-
-        switch (status) {
-            case NETWORK_STATUS_STATES.GOOD:
-                statusBox.classList.add('network-good');
-				popoverTail.classList.add('network-good');
-                statusText.textContent = 'Mạng ổn định';
-                break;
-            case NETWORK_STATUS_STATES.SLOW:
-                statusBox.classList.add('network-slow');
-				popoverTail.classList.add('network-slow');
-                statusText.textContent = 'Mạng chậm';
-                break;
-            case NETWORK_STATUS_STATES.OFFLINE:
-                statusBox.classList.add('network-offline');
-				popoverTail.classList.add('network-offline');
-                statusText.textContent = 'Mất kết nối';
-                break;
-            default:
-                statusBox.classList.add('network-good');
-				popoverTail.classList.add('network-good');
-                statusText.textContent = 'Kiểm tra kết nối...';
-                break;
-        }
-    }
-
-    updateNetworkStatusUI('offline');
-});
-</script>
 </html>

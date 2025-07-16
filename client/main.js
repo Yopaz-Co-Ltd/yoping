@@ -86,6 +86,22 @@ ipcMain.on('show-context-menu', (event) => {
   menu.popup({ window: win })
 })
 
+const handleNetworkStatus = () => {
+  const statuses = ['GOOD', 'SLOW', 'OFFLINE'];
+  let currentIndex = 0;
+
+  BrowserWindow.getAllWindows().forEach(window => {
+    window.webContents.send('network-status-update', statuses[currentIndex]);
+  });
+
+  setInterval(() => {
+    currentIndex = (currentIndex + 1) % statuses.length;
+    BrowserWindow.getAllWindows().forEach(window => {
+      window.webContents.send('network-status-update', statuses[currentIndex]);
+    });
+  }, 5000);
+};
+
 app.whenReady().then(() => {
   if (process.platform === 'darwin') {
     app.dock.hide()
@@ -93,6 +109,10 @@ app.whenReady().then(() => {
 
   ipcMain.handle('get-device-info', () => {
     return getOSInfo();
+  });
+
+  ipcMain.on('get-network-info', () => {
+    handleNetworkStatus();
   });
 
   createTray()
