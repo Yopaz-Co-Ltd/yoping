@@ -38,7 +38,19 @@ body {
   height: 0;
   border-left: 15px solid transparent;
   border-right: 15px solid transparent;
-  border-bottom: 15px solid #f16375;
+  border-bottom: 15px solid;
+}
+
+.popover-tail.network-good {
+  border-bottom-color: #007EAC;
+}
+
+.popover-tail.network-slow {
+  border-bottom-color: #fca53a;
+}
+
+.popover-tail.network-offline {
+  border-bottom-color: #C1356D;
 }
 
 .container {
@@ -53,7 +65,6 @@ body {
 }
 
 .status-box {
-  background: linear-gradient(to bottom, #f16375, #fca53a);
   color: white;
   padding: 18px;
 }
@@ -73,21 +84,51 @@ body {
   margin-top: 5px;
 }
 
-.status-title span {
+.status-indicator {
   display: inline-block;
   width: 8px;
   height: 8px;
-  background-color: yellow;
   border-radius: 50%;
   margin-right: 8px;
   margin-left: 2px;
   border: 1px solid white;
+  transition: background-color 0.5s ease;
 }
 
-.status-title h2 {
-  margin-bottom: 0px;
-  margin-top: 0px;
-  font-size: 18px;
+.status-box.network-good {
+  background: linear-gradient(to bottom, #007EAC, #00547a);
+}
+
+.status-box.network-good .status-indicator {
+  background-color: #00BF63;
+}
+
+.status-box.network-slow {
+  background: linear-gradient(to bottom, #fca53a, #f16375);
+}
+
+.status-box.network-slow .status-indicator {
+  background-color: #FFC107;
+}
+
+.status-box.network-offline {
+  background: linear-gradient(to bottom, #C1356D, #f08977);
+}
+
+.status-box.network-offline .status-indicator {
+  background-color: #FF4C4C;
+}
+
+.status-text {
+    font-size: 1.5em;
+    margin: 0;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.status-box .status-title {
+    display: flex;
+    align-items: center;
 }
 
 .more-icon {
