@@ -22,16 +22,24 @@ canvas.style.width = width + "px";
 canvas.style.height = height + "px";
 ctx.scale(dpr, dpr);
 
-window.electronAPI.onPlatform((platform) => {
-  const popoverTail = document.querySelector('.popover-tail');
-  if (!popoverTail) return;
-
-  if (platform === 'win32') {
+const { device } = await window.electronAPI.getDeviceInfo();
+const os = device.os;
+const popoverTail = document.querySelector('.popover-tail');
+if (os === 'windows') {
     popoverTail.style.display = 'none';
-  } else {
-    popoverTail.style.display = 'block';
-  }
-});
+} else {
+  popoverTail.style.display = 'block';
+}
+// window.electronAPI.getDeviceInfo((platform) => {
+//   const popoverTail = document.querySelector('.popover-tail');
+//   if (!popoverTail) return;
+
+//   if (platform === 'win32') {
+//     popoverTail.style.display = 'none';
+//   } else {
+//     popoverTail.style.display = 'block';
+//   }
+// });
 
 // === Vẽ sơ đồ mạng ===
 function drawDevice(x, y, label, deviceImg) {
@@ -171,7 +179,7 @@ const lineCtx = lineCanvas.getContext("2d");
 
 let latestNetworkInfo = null;
 
-function drawLink(x1, y1, x2, y2, type='wired') {
+function drawLink(x1, y1, x2, y2, type = 'wired') {
   lineCtx.beginPath();
   lineCtx.moveTo(x1, y1);
   lineCtx.lineTo(x2, y2);
