@@ -30,16 +30,6 @@ if (os === 'windows') {
 } else {
   popoverTail.style.display = 'block';
 }
-// window.electronAPI.getDeviceInfo((platform) => {
-//   const popoverTail = document.querySelector('.popover-tail');
-//   if (!popoverTail) return;
-
-//   if (platform === 'win32') {
-//     popoverTail.style.display = 'none';
-//   } else {
-//     popoverTail.style.display = 'block';
-//   }
-// });
 
 // === Vẽ sơ đồ mạng ===
 function drawDevice(x, y, label, deviceImg) {
