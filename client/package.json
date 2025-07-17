@@ -16,6 +16,7 @@
     "electron-builder": "^26.0.12"
   },
   "dependencies": {
+    "ping": "^0.4.4",
     "systeminformation": "^5.27.7"
   }
 }

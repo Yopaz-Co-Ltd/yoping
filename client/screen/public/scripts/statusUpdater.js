@@ -4,17 +4,20 @@ export const NETWORK_STATUS_STATES = {
   OFFLINE: 'OFFLINE'
 };
 
-export function updateUI(statusCode) {
+export function updateUI(networkInfo) {
   const statusBox = document.querySelector(".status-box");
   const statusText = statusBox.querySelector('.status-text');
   const popoverTail = document.querySelector('.popover-tail');
+  const ssid = document.querySelector('.ssid');
+  const pingLocalEl = document.getElementById('ping-local');
+  const pingInternetEl = document.getElementById('ping-internet');
 
   statusBox.classList.remove('network-good', 'network-slow', 'network-offline');
   popoverTail.classList.remove('network-good', 'network-slow', 'network-offline');
 
   let text = "", className = "";
 
-  switch (statusCode) {
+  switch (networkInfo.status) {
     case NETWORK_STATUS_STATES.GOOD:
       text = "Mạng ổn định";
       className = "network-good";
@@ -37,11 +40,35 @@ export function updateUI(statusCode) {
   if (popoverTail) popoverTail.classList.add(className);
 
   document.querySelectorAll('.status-box-background').forEach(el => {
-    el.style.opacity = '0';
+    el.classList.remove('active');
   });
-  
+
   const target = document.querySelector(`.status-box-background.${className}`);
   if (target) {
-    target.style.opacity = '1';
+    target.classList.add('active');
+  }
+
+  if (ssid) {
+    if (networkInfo.type === 'wifi' && networkInfo.data) {
+      ssid.textContent =
+        (networkInfo.data.ssid ? `${networkInfo.data.ssid}` : '') +
+        (networkInfo.data.rssi != null ? ` (${networkInfo.data.rssi})` : '');
+    } else if (networkInfo.type === 'wired') {
+      ssid.textContent = 'Mạng dây';
+    } else {
+      ssid.textContent = '';
+    }
+  }
+
+  if (networkInfo.data?.ping?.local != null) {
+    pingLocalEl.innerHTML = `${networkInfo.data.ping.local}<span style="font-size:14px;"> ms</span>`;
+  } else {
+    pingLocalEl.textContent = '...';
+  }
+
+  if (networkInfo.data?.ping?.internet != null) {
+    pingInternetEl.innerHTML = `${networkInfo.data.ping.internet}<span style="font-size:14px;"> ms</span>`;
+  } else {
+    pingInternetEl.textContent = '...';
   }
 }
