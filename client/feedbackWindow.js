@@ -7,6 +7,7 @@ function createFeedbackWindow() {
     height: 400,
     resizable: false,
     show: true,
+    autoHideMenuBar: true,
      webPreferences: {
       preload: path.join(__dirname, 'preload.js')
     }

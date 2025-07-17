@@ -11,7 +11,7 @@ let win = null
 const NOTIFICATION_TITLE = 'Mất kết nối mạng';
 const NOTIFICATION_BODY = 'Vui lòng kiểm tra kết nối Internet.';
 
-function showNotification () {
+function showNotification() {
   const notification = new Notification({
     title: NOTIFICATION_TITLE,
     body: NOTIFICATION_BODY,
@@ -47,7 +47,7 @@ const getOSInfo = () => {
 const createTray = () => {
   tray = new Tray(path.join(__dirname, 'yopingTemplate.png'))
   const contextMenu = Menu.buildFromTemplate([
-    // { label: 'Quit', click: () => app.quit() }
+
   ])
   tray.setContextMenu(contextMenu)
   tray.setToolTip('Yoping App')
@@ -69,17 +69,37 @@ const createTray = () => {
         }
       })
       win.loadFile(path.join(__dirname, 'screen/index.html'))
-      // win.webContents.openDevTools({mode: 'detach'})
+
 
       win.on('blur', () => {
         win.hide()
       })
 
       win.once('ready-to-show', () => {
-        const trayBounds = tray.getBounds()
         const primaryDisplay = screen.getPrimaryDisplay()
-        const x = Math.round(trayBounds.x + (trayBounds.width / 2) - (375 / 2))
-        const y = Math.round(trayBounds.y + trayBounds.height + 4)
+        const displayBounds = primaryDisplay.bounds
+        const workArea = primaryDisplay.workArea
+
+        const windowBounds = win.getBounds()
+        const x = displayBounds.x + displayBounds.width - windowBounds.width - 10
+
+        let y
+        const taskbarHeight = displayBounds.height - workArea.height
+        const taskbarAtTop = workArea.y > displayBounds.y
+
+        if (taskbarHeight > 0) {
+          if (taskbarAtTop) {
+            y = workArea.y + 10
+          } else {
+            y = workArea.y + workArea.height - windowBounds.height - 10
+          }
+        } else {
+          y = displayBounds.y + displayBounds.height - windowBounds.height - 10
+        }
+
+        win.webContents.on('did-finish-load', () => {
+          win.webContents.send('platform-info', process.platform);
+        });
         win.setPosition(x, y)
         win.show()
       })

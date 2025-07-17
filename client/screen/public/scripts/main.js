@@ -22,6 +22,17 @@ canvas.style.width = width + "px";
 canvas.style.height = height + "px";
 ctx.scale(dpr, dpr);
 
+window.electronAPI.onPlatform((platform) => {
+  const popoverTail = document.querySelector('.popover-tail');
+  if (!popoverTail) return;
+
+  if (platform === 'win32') {
+    popoverTail.style.display = 'none';
+  } else {
+    popoverTail.style.display = 'block';
+  }
+});
+
 // === Vẽ sơ đồ mạng ===
 function drawDevice(x, y, label, deviceImg) {
   // Vẽ hình tròn chính
@@ -85,9 +96,9 @@ async function getDeviceInformation() {
 
   const osIcon =
     os === 'windows' ? windowsIcon :
-    os === 'linux'   ? linuxIcon   :
-    os === 'mac' ? macIcon : 
-    routerIcon;
+      os === 'linux' ? linuxIcon :
+        os === 'mac' ? macIcon :
+          routerIcon;
 
   drawNetwork(osIcon);
 }
