@@ -1,6 +1,5 @@
 const { BrowserWindow } = require('electron');
-const { getNetworkInfo, getPingInfo } = require('../utils/network');
-const { getOSInfo } = require('../utils/device');
+const { getNetworkInfo, getPingToDefaultGateway, getPingToDomestic, getPingToInternational, getPingToPublicIP } = require('../utils/network');
 
 class SystemEvent {
   constructor() {
@@ -10,10 +9,16 @@ class SystemEvent {
 
   start() {
     this.emitNetworkInfo();
-    this.emitPingInfo();
+    this.emitPingDefaultGatewayInfo();
+    this.emitPingPublicIPInfo();
+    this.emitPingDomesticInfo();
+    this.emitPingInternationalInfo();
 
     this.networkInterval = setInterval(() => this.emitNetworkInfo(), 5000);
-    this.pingInterval = setInterval(() => this.emitPingInfo(), 1000);
+    this.pingInterval = setInterval(() => this.emitPingDefaultGatewayInfo(), 1000);
+    this.pingInterval = setInterval(() => this.emitPingPublicIPInfo(), 1000);
+    this.pingInterval = setInterval(() => this.emitPingDomesticInfo(), 10000);
+    this.pingInterval = setInterval(() => this.emitPingInternationalInfo(), 30000);
   }
 
   stop() {
@@ -28,18 +33,34 @@ class SystemEvent {
     });
   }
 
-  emitPingInfo() {
-    getPingInfo().then((info) => {
-      this.broadcast('ping-update', info);
-      console.log('Ping Info:', info);
+  emitPingDefaultGatewayInfo() {
+    getPingToDefaultGateway().then((info) => {
+      this.broadcast('ping-default-gateway', info);
+      console.log('Ping Default Gateway Info:', info);
     });
   }
 
-  emitDeviceInfo() {
-    const info = getOSInfo();
-    this.broadcast('device-info', info);
-    console.log('Device Info:', info);
+  emitPingDomesticInfo() {
+    getPingToDomestic().then((info) => {
+      this.broadcast('ping-domestic', info);
+      console.log('Ping Domestic Info:', info);
+    });
   }
+
+  emitPingInternationalInfo() {
+    getPingToInternational().then((info) => {
+      this.broadcast('ping-international', info);
+      console.log('Ping International Info:', info);
+    });
+  }
+
+  emitPingPublicIPInfo() {
+    getPingToPublicIP().then((info) => {
+      this.broadcast('ping-public-ip', info);
+      console.log('Ping Public IP Info:', info);
+    });
+  }
+
 
   broadcast(channel, payload) {
     BrowserWindow.getAllWindows().forEach(win => {

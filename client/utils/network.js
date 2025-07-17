@@ -1,6 +1,7 @@
+const axios = require('axios');
 const si = require('systeminformation');
 const ping = require('ping');
-const { NETWORK_TYPES, NETWORK_STATUS, PING_DOMAIN } = require('./const');
+const { NETWORK_TYPES, PING_DOMAIN } = require('./const');
 
 async function getNetworkInfo() {
   const type = await getConnectionType();
@@ -18,30 +19,32 @@ async function getNetworkInfo() {
   };
 }
 
-async function getPingInfo() {
+async function getPingToDefaultGateway() {
   const gateway = await si.networkGatewayDefault();
-  const resLocal = await ping.promise.probe(gateway);
-  const resDomestic = await ping.promise.probe(PING_DOMAIN.DOMESTIC);
-  const resInternational = await ping.promise.probe(PING_DOMAIN.INTERNATIONAL);
+  const res = await ping.promise.probe(gateway, { timeout: 1 });
+  return res.alive ? res.time : null;
+}
 
-  const pingLocal = resLocal.alive ? resLocal.time : null;
-  const pingDomestic = resDomestic.alive ? resDomestic.time : null;
-  const pingInternational = resInternational.alive ? resInternational.time : null;
-
-  let status = NETWORK_STATUS.OFFLINE;
-  if (pingInternational != null) {
-    if (pingInternational < 50) status = NETWORK_STATUS.GOOD;
-    else if (pingInternational < 150) status = NETWORK_STATUS.SLOW;
+async function getPingToPublicIP() {
+  let ip;
+  try {
+    const response = await axios.get('https://api.ipify.org?format=json', { timeout: 1000 });
+    ip = response.data.ip;
+  } catch (error) {
+    return null;
   }
+  const res = await ping.promise.probe(ip, { timeout: 1 });
+  return res.alive ? res.time : null;
+}
 
-  return {
-    status,
-    ping: {
-      local: pingLocal,
-      domestic: pingDomestic,
-      international: pingInternational
-    }
-  };
+async function getPingToDomestic() {
+  const res = await ping.promise.probe(PING_DOMAIN.DOMESTIC, { timeout: 1 });
+  return res.alive ? res.time : null;
+}
+
+async function getPingToInternational() {
+  const res = await ping.promise.probe(PING_DOMAIN.INTERNATIONAL, { timeout: 1 });
+  return res.alive ? res.time : null;
 }
 
 async function getConnectionType() {
@@ -79,4 +82,10 @@ async function getWiredInfo() {
   };
 }
 
-module.exports = { getNetworkInfo, getPingInfo };
+module.exports = {
+  getNetworkInfo,
+  getPingToDefaultGateway,
+  getPingToPublicIP, 
+  getPingToDomestic, 
+  getPingToInternational
+};

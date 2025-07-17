@@ -11,7 +11,7 @@ export const NETWORK_STATUS = {
 };
 
 export const PING_DOMAIN = {
-  DOMESTIC: 'viettel.vn',
+  DOMESTIC: '203.210.148.65',
   INTERNATIONAL: '1.1.1.1',
 }
 
