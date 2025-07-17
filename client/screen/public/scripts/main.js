@@ -1,4 +1,4 @@
-import { updateUI } from './statusUpdater.js';
+import { updateNetworkInfo, updateNetworkStatus, updatePing } from './statusUpdater.js';
 
 const canvas = document.getElementById("device-diagram");
 const ctx = canvas.getContext("2d");
@@ -220,9 +220,11 @@ function drawLine() {
 drawLine();
 
 
-window.electronAPI.onNetworkStatusUpdate((networkInfo) => {
-  latestNetworkInfo = networkInfo;
+window.electronAPI.onNetworkUpdate((data) => {
+  latestNetworkInfo = data?.network_info;
+  updateNetworkInfo(data?.network_info);
   drawLine();
-  console.log('🟢 Nhận cập nhật trạng thái mạng:', networkInfo);
-  updateUI(networkInfo);
+  updateNetworkStatus(data?.ping_domestic_status);
+  updatePing(data?.ping_domestic, 'internet');
+  updatePing(data?.ping_public_ip, 'local');
 });
