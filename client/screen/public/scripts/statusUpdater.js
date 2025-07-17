@@ -35,4 +35,13 @@ export function updateUI(statusCode) {
   if (statusText) statusText.textContent = text;
   if (statusBox) statusBox.classList.add(className);
   if (popoverTail) popoverTail.classList.add(className);
+
+  document.querySelectorAll('.status-box-background').forEach(el => {
+    el.style.opacity = '0';
+  });
+  
+  const target = document.querySelector(`.status-box-background.${className}`);
+  if (target) {
+    target.style.opacity = '1';
+  }
 }

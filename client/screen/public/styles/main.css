@@ -67,6 +67,19 @@ body {
 .status-box {
   color: white;
   padding: 18px;
+  position: relative;
+  z-index: 1;
+}
+.status-box-background {
+  position: absolute;
+  content: "";
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  transition: opacity 0.5s linear;
+  opacity: 0;
 }
 
 .status-header {
@@ -95,7 +108,7 @@ body {
   transition: background-color 0.5s ease;
 }
 
-.status-box.network-good {
+.status-box-background.network-good {
   background: linear-gradient(to bottom, #007EAC, #00547a);
 }
 
@@ -103,7 +116,7 @@ body {
   background-color: #00BF63;
 }
 
-.status-box.network-slow {
+.status-box-background.network-slow {
   background: linear-gradient(to bottom, #fca53a, #f16375);
 }
 
@@ -111,7 +124,7 @@ body {
   background-color: #FFC107;
 }
 
-.status-box.network-offline {
+.status-box-background.network-offline {
   background: linear-gradient(to bottom, #C1356D, #f08977);
 }
 
