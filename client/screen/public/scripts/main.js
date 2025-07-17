@@ -156,7 +156,10 @@ drawMotion();
 //Line
 const lineCanvas = document.getElementById("line-diagram");
 const lineCtx = lineCanvas.getContext("2d");
-function drawLink(x1, y1, x2, y2, type='ethernet') {
+
+let latestNetworkInfo = null;
+
+function drawLink(x1, y1, x2, y2, type='wired') {
   lineCtx.beginPath();
   lineCtx.moveTo(x1, y1);
   lineCtx.lineTo(x2, y2);
@@ -169,7 +172,7 @@ function drawLink(x1, y1, x2, y2, type='ethernet') {
   const iconSize = 13;
   const iconWifiSize = 16;
 
-  if (type == 'ethernet') {
+  if (type == 'wired') {
     if (plugIcon && plugIcon.complete) {
       lineCtx.drawImage(plugIcon, centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
     } else if (plugIcon) {
@@ -188,6 +191,9 @@ function drawLink(x1, y1, x2, y2, type='ethernet') {
   }
 }
 function drawLine() {
+  // Xoá nội dung canvas cũ
+  lineCtx.clearRect(0, 0, lineCanvas.width, lineCanvas.height);
+
   // Dây nối xuống thiết bị
   lineCtx.beginPath();
   lineCtx.moveTo(80, 42);
@@ -197,13 +203,16 @@ function drawLine() {
   lineCtx.stroke();
 
   drawLink(110, 140, 160, 140);
-  drawLink(220, 140, 270, 140, 'wifi');
+
+  const type = latestNetworkInfo?.type === 'wifi' ? 'wifi' : 'wired';
+  drawLink(220, 140, 270, 140, type);
 }
 drawLine();
 
-window.electronAPI.getNetWorkInfo();
 
-window.electronAPI.onNetworkStatusUpdate((value) => {
-  console.log('🟢 Nhận cập nhật trạng thái mạng:', value);
-  updateUI(value.status);
+window.electronAPI.onNetworkStatusUpdate((networkInfo) => {
+  latestNetworkInfo = networkInfo;
+  drawLine();
+  console.log('🟢 Nhận cập nhật trạng thái mạng:', networkInfo);
+  updateUI(networkInfo);
 });

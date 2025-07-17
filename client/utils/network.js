@@ -10,10 +10,19 @@ async function getNetwordInfo() {
     data = await getWifiInfo();
   } else if (type === NETWORK_TYPES.WIRED) {
     data = await getWiredInfo();
-  } 
+  }
+
+  let status = 'OFFLINE';
+  const pingValue = data?.ping?.internet;
+
+  if (pingValue != null) {
+    if (pingValue < 50) status = 'GOOD';
+    else if (pingValue < 150) status = 'SLOW';
+    else status = 'OFFLINE';
+  }
 
   return {
-    status: 'GOOD',
+    status,
     type,
     data
   };
@@ -34,7 +43,7 @@ async function getWifiInfo() {
   const freq = connection.frequency || 0;
   const band = freq >= 4900 ? '5GHz' : '2.4GHz';
   const gateway = await si.networkGatewayDefault();
-    console.log('Gateway:', gateway);
+  console.log('Gateway:', gateway);
   const resLocal = await ping.promise.probe(gateway);
   const pingLocal = resLocal.alive ? resLocal.time : null;
   const pingInternet = await si.inetLatency();
@@ -48,7 +57,6 @@ async function getWifiInfo() {
   const downloadMbps = (rx * 8 / 1_000_000).toFixed(2);
 
   return {
-    
     ssid: connection.ssid || '(unknown)',
     band,
     rssi,
@@ -74,7 +82,7 @@ async function getWiredInfo() {
   const pingInternet = await si.inetLatency();
   console.log('local ping:', pingLocal);
   return {
-    speed, 
+    speed,
     ping: {
       internet: pingInternet,
       local: pingLocal,

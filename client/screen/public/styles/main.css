@@ -108,6 +108,10 @@ body {
   transition: background-color 0.5s ease;
 }
 
+.status-box-background.active {
+  opacity: 1;
+}
+
 .status-box-background.network-good {
   background: linear-gradient(to bottom, #007EAC, #00547a);
 }

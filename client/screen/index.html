@@ -13,8 +13,8 @@
 	<div class="popover-tail"></div>
 	<div class="container">
 		<!-- Phần trạng thái -->
-		<div class="status-box">
-			<div class="status-box-background network-good"></div>
+		<div class="status-box network-good">
+			<div class="status-box-background network-good active"></div>
 			<div class="status-box-background network-slow"></div>
 			<div class="status-box-background network-offline"></div>
 			<div class="status-header">
@@ -22,7 +22,7 @@
 					<div class="status-title">
 						<span class="status-indicator"></span> <h2 class="status-text">Đang kiểm tra kết nối...</h2>
 					</div>
-					<div class="ssid">{{ ssid }}</div>
+					<div class="ssid"></div>
 				</div>
 
 				<div class="more-icon">
@@ -39,11 +39,11 @@
 
 			<div class="ping-info">
 				<div class="ping-block">
-					<h2>300 <span style="font-size:14px;">ms</span></h2>
+					<h2 id="ping-local">...</h2>
 					<p>Ping nội bộ</p>
 				</div>
-				<div class="ping-block timeout">
-					<h2>Timeout</h2>
+				<div class="ping-block">
+					<h2 id="ping-internet">...</h2>
 					<p>Ping ra Internet</p>
 				</div>
 			</div>
