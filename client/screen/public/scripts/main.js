@@ -92,6 +92,7 @@ function drawNetwork(userDeviceIcon) {
 
 async function getDeviceInformation() {
   const { device } = await window.electronAPI.getDeviceInfo();
+  console.log('🟢 Nhận thông tin thiết bị:', device);
   const os = device.os;
 
   const osIcon =
