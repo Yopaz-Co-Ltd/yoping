@@ -2,6 +2,7 @@ const axios = require('axios');
 const si = require('systeminformation');
 const ping = require('ping');
 const { NETWORK_TYPES, PING_DOMAIN } = require('./const');
+const { showNotification } = require('./notification');
 
 async function getNetworkInfo() {
   const type = await getConnectionType();
@@ -82,10 +83,21 @@ async function getWiredInfo() {
   };
 }
 
+function getNetworkStatus(ping) {
+  if (!ping || ping >= 150) {
+    showNotification();
+    return 'OFFLINE';
+  }
+
+  if (ping < 50) return 'GOOD';
+  return 'SLOW';
+}
+
 module.exports = {
   getNetworkInfo,
   getPingToDefaultGateway,
   getPingToPublicIP, 
   getPingToDomestic, 
-  getPingToInternational
+  getPingToInternational,
+  getNetworkStatus
 };

@@ -4,20 +4,36 @@ export const NETWORK_STATUS_STATES = {
   OFFLINE: 'OFFLINE'
 };
 
-export function updateUI(networkInfo) {
-  const statusBox = document.querySelector(".status-box");
-  const statusText = statusBox.querySelector('.status-text');
-  const popoverTail = document.querySelector('.popover-tail');
+export function updateNetworkInfo(networkInfo) {
   const ssid = document.querySelector('.ssid');
   const pingLocalEl = document.getElementById('ping-local');
   const pingInternetEl = document.getElementById('ping-internet');
+
+  if (ssid) {
+    if (networkInfo.type === 'wifi' && networkInfo.data) {
+      ssid.textContent =
+        (networkInfo.data.ssid ? `${networkInfo.data.ssid}` : '') +
+        (networkInfo.data.rssi != null ? ` (rssi: ${networkInfo.data.rssi})` : '');
+    } else if (networkInfo.type === 'wired') {
+      ssid.textContent = 'Mạng dây';
+    } else {
+      ssid.textContent = '';
+    }
+  }
+}
+
+export function updateNetworkStatus(networkStatus) {
+  const statusBox = document.querySelector(".status-box");
+  const statusText = statusBox.querySelector('.status-text');
+  const popoverTail = document.querySelector('.popover-tail');
+
 
   statusBox.classList.remove('network-good', 'network-slow', 'network-offline');
   popoverTail.classList.remove('network-good', 'network-slow', 'network-offline');
 
   let text = "", className = "";
 
-  switch (networkInfo.status) {
+  switch (networkStatus) {
     case NETWORK_STATUS_STATES.GOOD:
       text = "Mạng ổn định";
       className = "network-good";
@@ -47,28 +63,13 @@ export function updateUI(networkInfo) {
   if (target) {
     target.classList.add('active');
   }
+}
 
-  if (ssid) {
-    if (networkInfo.type === 'wifi' && networkInfo.data) {
-      ssid.textContent =
-        (networkInfo.data.ssid ? `${networkInfo.data.ssid}` : '') +
-        (networkInfo.data.rssi != null ? ` (rssi: ${networkInfo.data.rssi})` : '');
-    } else if (networkInfo.type === 'wired') {
-      ssid.textContent = 'Mạng dây';
-    } else {
-      ssid.textContent = '';
-    }
-  }
-
-  if (networkInfo.data?.ping?.local != null) {
-    pingLocalEl.innerHTML = `${networkInfo.data.ping.local}<span style="font-size:14px;"> ms</span>`;
+export function updatePing(ping, type) {
+  const pingEl = document.getElementById(`ping-${type}`);
+  if (pingEl && ping) {
+    pingEl.innerHTML = `${Math.round(ping)}<span style="font-size:14px;"> ms</span>`;
   } else {
-    pingLocalEl.textContent = '...';
-  }
-
-  if (networkInfo.data?.ping?.internet != null) {
-    pingInternetEl.innerHTML = `${networkInfo.data.ping.internet}<span style="font-size:14px;"> ms</span>`;
-  } else {
-    pingInternetEl.textContent = '...';
+    pingEl.textContent = '---';
   }
 }

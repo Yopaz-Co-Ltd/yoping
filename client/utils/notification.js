@@ -1,6 +1,5 @@
-import { Notification } from 'electron';
-import { NOTIFICATION } from './const.js';
-
+const { Notification } = require("electron");
+const { NOTIFICATION } = require("./const");
 
 const showNotification = () => {
   const notification = new Notification({
@@ -12,5 +11,5 @@ const showNotification = () => {
 }
 
 module.exports = {
-  showNotification
+  showNotification,
 };

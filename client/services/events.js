@@ -1,17 +1,25 @@
 const { BrowserWindow } = require('electron');
-const { getNetworkInfo, getPingToDefaultGateway, getPingToDomestic, getPingToInternational, getPingToPublicIP } = require('../utils/network');
+const { 
+  getNetworkInfo, 
+  getPingToDefaultGateway, 
+  getPingToDomestic, 
+  getPingToInternational, 
+  getPingToPublicIP, 
+  getNetworkStatus 
+} = require('../utils/network');
 
 class SystemEvent {
   constructor() {
     this.networkInterval = null;
     this.pingInterval = null;
+    this.networkData = {};
   }
 
   start() {
+    this.emitPingDomesticInfo();
     this.emitNetworkInfo();
     this.emitPingDefaultGatewayInfo();
     this.emitPingPublicIPInfo();
-    this.emitPingDomesticInfo();
     this.emitPingInternationalInfo();
 
     this.networkInterval = setInterval(() => this.emitNetworkInfo(), 5000);
@@ -26,45 +34,59 @@ class SystemEvent {
     clearInterval(this.pingInterval);
   }
 
+  updateAndBroadcast(key, value) {
+    if (this.networkData[key] !== JSON.stringify(value)) {
+      this.networkData[key] = JSON.stringify(value);
+
+      const parsedData = {};
+      for (const k in this.networkData) {
+        try {
+          parsedData[k] = JSON.parse(this.networkData[k]);
+        } catch (e) {
+          parsedData[k] = null;
+        }
+      }
+
+      this.broadcast(parsedData);
+      console.log('Updated network data:', parsedData);
+    }
+  }
+
   emitNetworkInfo() {
     getNetworkInfo().then((info) => {
-      this.broadcast('network-status-update', info);
-      console.log('Network Info:', info);
+      this.updateAndBroadcast('network_info', info);
     });
   }
 
   emitPingDefaultGatewayInfo() {
     getPingToDefaultGateway().then((info) => {
-      this.broadcast('ping-default-gateway', info);
-      console.log('Ping Default Gateway Info:', info);
+      this.updateAndBroadcast('ping_default_gateway', info);
     });
   }
 
   emitPingDomesticInfo() {
     getPingToDomestic().then((info) => {
-      this.broadcast('ping-domestic', info);
-      console.log('Ping Domestic Info:', info);
+      this.updateAndBroadcast('ping_domestic', info);
+      this.updateAndBroadcast('ping_domestic_status', getNetworkStatus(info));
     });
   }
 
   emitPingInternationalInfo() {
     getPingToInternational().then((info) => {
-      this.broadcast('ping-international', info);
-      console.log('Ping International Info:', info);
+      this.updateAndBroadcast('ping_international', info);
     });
   }
 
   emitPingPublicIPInfo() {
     getPingToPublicIP().then((info) => {
-      this.broadcast('ping-public-ip', info);
-      console.log('Ping Public IP Info:', info);
+      this.updateAndBroadcast('ping_public_ip', info);
     });
   }
 
 
-  broadcast(channel, payload) {
+  broadcast(payload) {
     BrowserWindow.getAllWindows().forEach(win => {
-      win.webContents.send(channel, payload);
+      win.webContents.send('network_event', payload)
     });
   }
 }
