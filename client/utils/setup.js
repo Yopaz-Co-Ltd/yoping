@@ -11,13 +11,13 @@ function createTray() {
   tray.setContextMenu(contextMenu);
   tray.setToolTip('Yoping App');
 
-  tray.on('click', () => {
+  tray.on('click', (_event, bounds) => {
     if (win) {
       win.isVisible() ? win.hide() : win.show();
     } else {
       win = new BrowserWindow({
         width: 375,
-        height: 440,
+        height: 465,
         show: false,
         frame: false,
         transparent: true,
@@ -35,32 +35,57 @@ function createTray() {
       win.on('blur', () => win.hide());
 
       win.once('ready-to-show', () => {
-        const primaryDisplay = screen.getPrimaryDisplay();
-        const displayBounds = primaryDisplay.bounds;
-        const workArea = primaryDisplay.workArea;
-
-        const windowBounds = win.getBounds();
-        const x = displayBounds.x + displayBounds.width - windowBounds.width - 10;
-
-        let y;
-        const taskbarHeight = displayBounds.height - workArea.height;
-        const taskbarAtTop = workArea.y > displayBounds.y;
-
-        y = taskbarHeight > 0
-          ? (taskbarAtTop ? workArea.y + 10 : workArea.y + workArea.height - windowBounds.height - 10)
-          : displayBounds.y + displayBounds.height - windowBounds.height - 10;
-
+        showWindow(bounds);
         win.webContents.on('did-finish-load', () => {
           win.webContents.send('platform-info', process.platform);
         });
-
-        win.setPosition(x, y);
-        win.show();
       });
     }
   });
 
   return tray;
+}
+
+function showWindow(trayBounds) {
+  const platform = process.platform;
+  const display = screen.getDisplayNearestPoint(screen.getCursorScreenPoint());
+  const displayBounds = display.bounds;
+  const workArea = display.workArea;
+
+  const windowBounds = win.getBounds();
+  let x = 0;
+  let y = 0;
+
+  if (platform === 'darwin') {
+    const trayX = trayBounds.x;
+    const trayY = trayBounds.y;
+    const trayWidth = trayBounds.width;
+
+    x = Math.round(trayX + trayWidth / 2 - windowBounds.width / 2);
+    y = Math.round(trayY + trayBounds.height + 4);
+
+  } else if (platform === 'win32') {
+    x = displayBounds.x + displayBounds.width - windowBounds.width - 10;
+
+    const taskbarHeight = displayBounds.height - workArea.height;
+    const taskbarAtTop = workArea.y > displayBounds.y;
+
+    if (taskbarHeight > 0) {
+      if (taskbarAtTop) {
+        y = workArea.y + 10;
+      } else {
+        y = workArea.y + workArea.height - windowBounds.height - 10;
+      }
+    } else {
+      y = displayBounds.y + displayBounds.height - windowBounds.height - 10;
+    }
+  }
+
+  console.log("SET POSITION: ", x, y);
+  
+  win.setPosition(x, y, false);
+  win.show();
+  win.focus();
 }
 
 module.exports = { createTray };
