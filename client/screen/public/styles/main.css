@@ -27,7 +27,7 @@ body {
   width: 375px;
   height: 420px;
   overflow: hidden;
-  clip-path: inset(0 round 12px);
+  /* clip-path: inset(0 round 12px); */
 }
 
 .popover-tail {
@@ -63,6 +63,7 @@ body {
   background: white;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
+  /* clip-path: inset(0 round 12px); */
 }
 
 .status-box {
@@ -207,7 +208,7 @@ body {
   position: relative;
   background: #000;
   width: 375px;
-  height: 300px;
+  height: 235px;
   padding-top: 10px;
 }
 
