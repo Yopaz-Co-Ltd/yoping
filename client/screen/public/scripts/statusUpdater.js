@@ -52,7 +52,7 @@ export function updateUI(networkInfo) {
     if (networkInfo.type === 'wifi' && networkInfo.data) {
       ssid.textContent =
         (networkInfo.data.ssid ? `${networkInfo.data.ssid}` : '') +
-        (networkInfo.data.rssi != null ? ` (${networkInfo.data.rssi})` : '');
+        (networkInfo.data.rssi != null ? ` (rssi: ${networkInfo.data.rssi})` : '');
     } else if (networkInfo.type === 'wired') {
       ssid.textContent = 'Mạng dây';
     } else {

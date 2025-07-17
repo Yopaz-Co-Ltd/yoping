@@ -180,7 +180,7 @@ function drawLink(x1, y1, x2, y2, type='wired') {
         lineCtx.drawImage(plugIcon, centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
       };
     }
-  } else {
+  } else if (type === 'wifi') {
     if (wifiIcon && wifiIcon.complete) {
       lineCtx.drawImage(wifiIcon, centerX - iconWifiSize / 2, centerY - iconWifiSize / 1.5, iconWifiSize, iconWifiSize);
     } else if (wifiIcon) {
@@ -204,7 +204,7 @@ function drawLine() {
 
   drawLink(110, 140, 160, 140);
 
-  const type = latestNetworkInfo?.type === 'wifi' ? 'wifi' : 'wired';
+  const type = latestNetworkInfo?.type ?? 'unknown';
   drawLink(220, 140, 270, 140, type);
 }
 drawLine();
