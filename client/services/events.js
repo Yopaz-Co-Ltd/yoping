@@ -34,18 +34,23 @@ class SystemEvent {
     clearInterval(this.pingInterval);
   }
 
+  parseNetworkData() {
+    const parsedData = {};
+    for (const k in this.networkData) {
+      try {
+        parsedData[k] = JSON.parse(this.networkData[k]);
+      } catch (e) {
+        parsedData[k] = null;
+      }
+    }
+    return parsedData;
+  }
+
   updateAndBroadcast(key, value) {
     if (this.networkData[key] !== JSON.stringify(value)) {
       this.networkData[key] = JSON.stringify(value);
 
-      const parsedData = {};
-      for (const k in this.networkData) {
-        try {
-          parsedData[k] = JSON.parse(this.networkData[k]);
-        } catch (e) {
-          parsedData[k] = null;
-        }
-      }
+      const parsedData = this.parseNetworkData();
 
       this.broadcast(parsedData);
       console.log('Updated network data:', parsedData);
@@ -83,6 +88,9 @@ class SystemEvent {
     });
   }
 
+  getCurrentNetworkInfo() {
+    return this.parseNetworkData();
+  }
 
   broadcast(payload) {
     BrowserWindow.getAllWindows().forEach(win => {

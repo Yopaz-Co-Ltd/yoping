@@ -5,6 +5,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   showContextMenu: () => ipcRenderer.send('show-context-menu'),
   getConnectionType: () => ipcRenderer.invoke('get-connection-type'),
   getDeviceInfo: () => ipcRenderer.invoke('get-device-info'),
+  getCurrentNetwork: () => ipcRenderer.invoke('get-current-network'),
   onNetworkUpdate: (callback) => ipcRenderer.on('network_event', (_event, value) => callback(value)),
 });
 

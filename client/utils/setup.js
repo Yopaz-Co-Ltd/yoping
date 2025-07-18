@@ -32,7 +32,7 @@ function createTray() {
       win.loadFile(path.join(__dirname, '../screen/index.html'));
       // win.webContents.openDevTools({ mode: 'detach' });
 
-      // win.on('blur', () => win.hide());
+      win.on('blur', () => win.hide());
 
       win.once('ready-to-show', () => {
         showWindow(bounds);
