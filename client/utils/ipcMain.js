@@ -21,9 +21,11 @@ function setupContextMenu() {
 }
 
 function createFeedbackWindow() {
+    const isMac = process.platform === 'darwin';
+    const windowHeight = isMac ? 400 : 412;
     const win = new BrowserWindow({
         width: 670,
-        height: 400,
+        height: windowHeight,
         resizable: false,
         show: true,
         autoHideMenuBar: true,
