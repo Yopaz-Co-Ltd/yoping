@@ -9,8 +9,10 @@ const wifiIcon = document.getElementById("wifiIcon");
 const macIcon = document.getElementById('macIcon');
 const windowsIcon = document.getElementById('windowsIcon');
 const linuxIcon = document.getElementById('linuxIcon');
-let isInternetConnected = true;
-let isDeviceConnected = false;
+let latestNetworkInfo = null;
+let hasPingInternet = true; //internet
+let hasPingPublicIP = true; //local
+let hasPingDefaultGateway = true
 
 // === Scale theo devicePixelRatio để nét không bị mờ ===
 const dpr = window.devicePixelRatio || 1;
@@ -134,16 +136,18 @@ function drawMotion() {
   motionCtx.clearRect(0, 0, motionCanvas.width, motionCanvas.height);
 
   // === Vertical streak (Internet xuống BOD)
-  const vGradient = motionCtx.createLinearGradient(light1InitX, p1 + 30, light1InitX, p1);
-  vGradient.addColorStop(0, startLightColor);
-  vGradient.addColorStop(1, endLightColor);
-  motionCtx.fillStyle = vGradient;
-  motionCtx.fillRect(light1InitX - 1, p1, 2, 30);
-  p1 += 0.8;
-  if (p1 > light1MaxY) p1 = light1InitY;
+  if (hasPingInternet) {
+    const vGradient = motionCtx.createLinearGradient(light1InitX, p1 + 30, light1InitX, p1);
+    vGradient.addColorStop(0, startLightColor);
+    vGradient.addColorStop(1, endLightColor);
+    motionCtx.fillStyle = vGradient;
+    motionCtx.fillRect(light1InitX - 1, p1, 2, 30);
+    p1 += 0.8;
+    if (p1 > light1MaxY) p1 = light1InitY;
+  }
 
   // === Horizontal streak 1 (BOD → Web5)
-  if (isInternetConnected) {
+  if (hasPingDefaultGateway) {
     const hGradient1 = motionCtx.createLinearGradient(p2, light2InitY, p2 + 30, light2InitY);
     hGradient1.addColorStop(0, endLightColor);
     hGradient1.addColorStop(1, startLightColor);
@@ -154,7 +158,7 @@ function drawMotion() {
   }
 
   // === Horizontal streak 2 (Web5 → Máy tôi)
-  if (isDeviceConnected) {
+  if (hasPingPublicIP) {
     const hGradient2 = motionCtx.createLinearGradient(p3, light3InitY, p3 + 30, light3InitY);
     hGradient2.addColorStop(0, endLightColor);
     hGradient2.addColorStop(1, startLightColor);
@@ -172,7 +176,11 @@ drawMotion();
 const lineCanvas = document.getElementById("line-diagram");
 const lineCtx = lineCanvas.getContext("2d");
 
-let latestNetworkInfo = null;
+function updatePingStates(data) {
+  hasPingInternet = data?.ping_domestic !== null;
+  hasPingPublicIP = data?.ping_public_ip !== null;
+  hasPingDefaultGateway = data?.ping_default_gateway !== null;
+}
 
 function drawLink(x1, y1, x2, y2, type = 'wired', isConnected = false) {
   const centerX = (x1 + x2) / 2;
@@ -222,25 +230,18 @@ function drawLink(x1, y1, x2, y2, type = 'wired', isConnected = false) {
 function drawLine() {
   // Xoá nội dung canvas cũ
   lineCtx.clearRect(0, 0, lineCanvas.width, lineCanvas.height);
+  const type = latestNetworkInfo?.network_info?.type ?? 'none';
 
-  // Dây nối xuống thiết bị
-  lineCtx.beginPath();
-  lineCtx.moveTo(80, 42);
-  lineCtx.lineTo(80, 140);
-  lineCtx.strokeStyle = "#0a4a5b";
-  lineCtx.lineWidth = 2;
-  lineCtx.stroke();
-
-  drawLink(110, 140, 160, 140, 'wired', isInternetConnected);
-
-  const type = latestNetworkInfo?.type ?? 'unknown';
-  drawLink(220, 140, 270, 140, type, isDeviceConnected);
+  drawLink(80, 42, 80, 120, 'none', hasPingInternet);
+  drawLink(110, 140, 160, 140, 'wired', hasPingDefaultGateway);
+  drawLink(220, 140, 270, 140, type, hasPingPublicIP);
 }
 drawLine();
 
 
 window.electronAPI.onNetworkUpdate((data) => {
-  latestNetworkInfo = data?.network_info;
+  latestNetworkInfo = data;
+  updatePingStates(data);
   updateNetworkInfo(data?.network_info);
   drawLine();
   updateNetworkStatus(data?.ping_domestic_status);
