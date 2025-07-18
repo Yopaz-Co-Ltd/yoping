@@ -44,7 +44,8 @@ body {
 }
 
 .form-group input,
-.form-group textarea {
+.form-group textarea,
+.form-group select {
   flex: 1;
   padding: 6px 8px;
   font-size: 13px;
