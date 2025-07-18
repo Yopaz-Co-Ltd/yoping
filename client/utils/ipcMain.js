@@ -48,4 +48,12 @@ const setUpIpcMain = () => {
     });
 }
 
-module.exports = { setUpIpcMain };
+const getCurrentNetworkInfo = (systemEvent) => {
+    ipcMain.handle('get-current-network', () => {
+        const data = systemEvent.getCurrentNetworkInfo();
+        console.log(data)
+        return data;
+    })
+}
+
+module.exports = { setUpIpcMain, getCurrentNetworkInfo };

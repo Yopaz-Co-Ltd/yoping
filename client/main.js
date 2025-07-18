@@ -1,7 +1,7 @@
 const { app } = require('electron')
 const SystemEvent = require('./services/events')
 const { createTray } = require('./utils/setup')
-const { setUpIpcMain } = require('./utils/ipcMain')
+const { setUpIpcMain, getCurrentNetworkInfo } = require('./utils/ipcMain')
 const systemEvent = new SystemEvent();
 
 setUpIpcMain();
@@ -16,6 +16,7 @@ app.whenReady().then(() => {
   }
 
   init();
+  getCurrentNetworkInfo(systemEvent);
 
   createTray();
 })
