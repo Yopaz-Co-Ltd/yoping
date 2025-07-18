@@ -32,6 +32,7 @@ function createFeedbackWindow() {
         }
     });
     win.loadFile(path.join(__dirname, './../screen/feedback.html'));
+    win.webContents.openDevTools({ mode: 'detach' });
 }
 
 const setUpIpcMain = () => {
