@@ -87,10 +87,15 @@ async function getWiredInfo() {
 
 function getNetworkStatus(ping) {
   const now = Date.now();
-  const shouldNotify = !ping || ping >= 150;
+
+  const PING_GOOD_THRESHOLD = 50;
+  const PING_OFFLINE_THRESHOLD = 300;
+  const NOTIFICATION_INTERVAL = 5 * 60 * 1000; // 5 minutes
+
+  const shouldNotify = !ping || ping >= PING_OFFLINE_THRESHOLD;
 
   if (shouldNotify) {
-    if (now - lastNotificationTime > 5 * 60 * 1000) { // noti again after 5 minutes
+    if (now - lastNotificationTime > NOTIFICATION_INTERVAL) {
       showNotification();
       lastNotificationTime = now;
     }
@@ -98,7 +103,7 @@ function getNetworkStatus(ping) {
   }
 
   lastNotificationTime = 0;
-  return ping < 50 ? 'GOOD' : 'SLOW';
+  return ping < PING_GOOD_THRESHOLD ? 'GOOD' : 'SLOW';
 }
 
 module.exports = {
