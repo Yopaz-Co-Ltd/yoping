@@ -5,6 +5,7 @@ export const NETWORK_STATUS_STATES = {
 };
 
 export function updateNetworkInfo(networkInfo) {
+  if (!networkInfo) return;
   const ssid = document.querySelector('.ssid');
 
   if (ssid) {

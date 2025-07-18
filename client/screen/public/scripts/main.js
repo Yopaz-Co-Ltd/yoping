@@ -147,7 +147,7 @@ function drawMotion() {
   }
 
   // === Horizontal streak 1 (BOD → Web5)
-  if (hasPingDefaultGateway) {
+  if (hasPingPublicIP) {
     const hGradient1 = motionCtx.createLinearGradient(p2, light2InitY, p2 + 30, light2InitY);
     hGradient1.addColorStop(0, endLightColor);
     hGradient1.addColorStop(1, startLightColor);
@@ -158,7 +158,7 @@ function drawMotion() {
   }
 
   // === Horizontal streak 2 (Web5 → Máy tôi)
-  if (hasPingPublicIP) {
+  if (hasPingDefaultGateway) {
     const hGradient2 = motionCtx.createLinearGradient(p3, light3InitY, p3 + 30, light3InitY);
     hGradient2.addColorStop(0, endLightColor);
     hGradient2.addColorStop(1, startLightColor);
@@ -233,13 +233,23 @@ function drawLine() {
   const type = latestNetworkInfo?.network_info?.type ?? 'none';
 
   drawLink(80, 42, 80, 120, 'none', hasPingInternet);
-  drawLink(110, 140, 160, 140, 'wired', hasPingDefaultGateway);
-  drawLink(220, 140, 270, 140, type, hasPingPublicIP);
+  drawLink(110, 140, 160, 140, 'wired', hasPingPublicIP);
+  drawLink(220, 140, 270, 140, type, hasPingDefaultGateway);
 }
 drawLine();
 
+async function getCurrentNetworkInfo() {
+  const data = await window.electronAPI.getCurrentNetwork();
+  updateUI(data);
+}
+
+getCurrentNetworkInfo();
 
 window.electronAPI.onNetworkUpdate((data) => {
+  updateUI(data);
+});
+
+function updateUI (data) {
   latestNetworkInfo = data;
   updatePingStates(data);
   updateNetworkInfo(data?.network_info);
@@ -247,4 +257,4 @@ window.electronAPI.onNetworkUpdate((data) => {
   updateNetworkStatus(data?.ping_domestic_status);
   updatePing(data?.ping_domestic, 'internet');
   updatePing(data?.ping_public_ip, 'local');
-});
+}
