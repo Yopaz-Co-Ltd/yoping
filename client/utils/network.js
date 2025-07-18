@@ -1,7 +1,7 @@
 const axios = require('axios');
 const si = require('systeminformation');
 const ping = require('ping');
-const { NETWORK_TYPES, PING_DOMAIN } = require('./const');
+const { NETWORK_TYPES, PING_DOMAIN, NETWORK_STATUS } = require('./const');
 const { showNotification } = require('./notification');
 
 let lastNotificationTime = 0;
@@ -99,11 +99,11 @@ function getNetworkStatus(ping) {
       showNotification();
       lastNotificationTime = now;
     }
-    return 'OFFLINE';
+    return NETWORK_STATUS.OFFLINE;
   }
 
   lastNotificationTime = 0;
-  return ping < PING_GOOD_THRESHOLD ? 'GOOD' : 'SLOW';
+  return ping < PING_GOOD_THRESHOLD ? NETWORK_STATUS.GOOD : NETWORK_STATUS.SLOW;
 }
 
 module.exports = {
