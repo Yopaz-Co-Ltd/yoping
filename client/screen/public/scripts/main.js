@@ -9,7 +9,8 @@ const wifiIcon = document.getElementById("wifiIcon");
 const macIcon = document.getElementById('macIcon');
 const windowsIcon = document.getElementById('windowsIcon');
 const linuxIcon = document.getElementById('linuxIcon');
-
+let isInternetConnected = true;
+let isDeviceConnected = false;
 
 // === Scale theo devicePixelRatio để nét không bị mờ ===
 const dpr = window.devicePixelRatio || 1;
@@ -132,7 +133,7 @@ function drawMotion() {
 
   motionCtx.clearRect(0, 0, motionCanvas.width, motionCanvas.height);
 
-  // Vertical streak
+  // === Vertical streak (Internet xuống BOD)
   const vGradient = motionCtx.createLinearGradient(light1InitX, p1 + 30, light1InitX, p1);
   vGradient.addColorStop(0, startLightColor);
   vGradient.addColorStop(1, endLightColor);
@@ -141,23 +142,27 @@ function drawMotion() {
   p1 += 0.8;
   if (p1 > light1MaxY) p1 = light1InitY;
 
-  // Horizontal streak 1
-  const hGradient1 = motionCtx.createLinearGradient(p2, light2InitY, p2 + 30, light2InitY);
-  hGradient1.addColorStop(0, endLightColor);
-  hGradient1.addColorStop(1, startLightColor);
-  motionCtx.fillStyle = hGradient1;
-  motionCtx.fillRect(p2, light2InitY - 1, 30, 2);
-  p2 += 0.8;
-  if (p2 > light2MaxX) p2 = light2InitX;
+  // === Horizontal streak 1 (BOD → Web5)
+  if (isInternetConnected) {
+    const hGradient1 = motionCtx.createLinearGradient(p2, light2InitY, p2 + 30, light2InitY);
+    hGradient1.addColorStop(0, endLightColor);
+    hGradient1.addColorStop(1, startLightColor);
+    motionCtx.fillStyle = hGradient1;
+    motionCtx.fillRect(p2, light2InitY - 1, 30, 2);
+    p2 += 0.8;
+    if (p2 > light2MaxX) p2 = light2InitX;
+  }
 
-  // Horizontal streak 2
-  const hGradient2 = motionCtx.createLinearGradient(p3, light3InitY, p3 + 30, light3InitY);
-  hGradient2.addColorStop(0, endLightColor);
-  hGradient2.addColorStop(1, startLightColor);
-  motionCtx.fillStyle = hGradient2;
-  motionCtx.fillRect(p3, light3InitY - 1, 30, 2);
-  p3 += 0.8;
-  if (p3 > light3MaxX) p3 = light3InitX;
+  // === Horizontal streak 2 (Web5 → Máy tôi)
+  if (isDeviceConnected) {
+    const hGradient2 = motionCtx.createLinearGradient(p3, light3InitY, p3 + 30, light3InitY);
+    hGradient2.addColorStop(0, endLightColor);
+    hGradient2.addColorStop(1, startLightColor);
+    motionCtx.fillStyle = hGradient2;
+    motionCtx.fillRect(p3, light3InitY - 1, 30, 2);
+    p3 += 0.8;
+    if (p3 > light3MaxX) p3 = light3InitX;
+  }
 
   requestAnimationFrame(drawMotion);
 }
@@ -169,33 +174,47 @@ const lineCtx = lineCanvas.getContext("2d");
 
 let latestNetworkInfo = null;
 
-function drawLink(x1, y1, x2, y2, type = 'wired') {
+function drawLink(x1, y1, x2, y2, type = 'wired', isConnected = false) {
+  const centerX = (x1 + x2) / 2;
+  const centerY = (y1 + y2) / 2;
+
   lineCtx.beginPath();
   lineCtx.moveTo(x1, y1);
   lineCtx.lineTo(x2, y2);
-  lineCtx.strokeStyle = "#0a4a5b";
+  lineCtx.strokeStyle = isConnected ? "#0a4a5b" : "#ff4d4f";
   lineCtx.lineWidth = 2;
   lineCtx.stroke();
 
-  const centerX = (x1 + x2) / 2;
-  const centerY = y1 - 12;
+  if (!isConnected) {
+    lineCtx.strokeStyle = "#ff4d4f";
+    lineCtx.lineWidth = 2;
+    lineCtx.beginPath();
+    lineCtx.moveTo(centerX - 6, centerY - 6);
+    lineCtx.lineTo(centerX + 6, centerY + 6);
+    lineCtx.moveTo(centerX + 6, centerY - 6);
+    lineCtx.lineTo(centerX - 6, centerY + 6);
+    lineCtx.stroke();
+    return;
+  }
+
   const iconSize = 13;
   const iconWifiSize = 16;
+  const iconY = y1 - 12;
 
-  if (type == 'wired') {
-    if (plugIcon && plugIcon.complete) {
-      lineCtx.drawImage(plugIcon, centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
+  if (type === 'wired') {
+    if (plugIcon?.complete) {
+      lineCtx.drawImage(plugIcon, centerX - iconSize / 2, iconY - iconSize / 2, iconSize, iconSize);
     } else if (plugIcon) {
       plugIcon.onload = () => {
-        lineCtx.drawImage(plugIcon, centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
+        lineCtx.drawImage(plugIcon, centerX - iconSize / 2, iconY - iconSize / 2, iconSize, iconSize);
       };
     }
   } else if (type === 'wifi') {
-    if (wifiIcon && wifiIcon.complete) {
-      lineCtx.drawImage(wifiIcon, centerX - iconWifiSize / 2, centerY - iconWifiSize / 1.5, iconWifiSize, iconWifiSize);
+    if (wifiIcon?.complete) {
+      lineCtx.drawImage(wifiIcon, centerX - iconWifiSize / 2, iconY - iconWifiSize / 1.5, iconWifiSize, iconWifiSize);
     } else if (wifiIcon) {
       wifiIcon.onload = () => {
-        lineCtx.drawImage(wifiIcon, centerX - iconWifiSize / 2, centerY - iconWifiSize / 1.5, iconWifiSize, iconWifiSize);
+        lineCtx.drawImage(wifiIcon, centerX - iconWifiSize / 2, iconY - iconWifiSize / 1.5, iconWifiSize, iconWifiSize);
       };
     }
   }
@@ -212,10 +231,10 @@ function drawLine() {
   lineCtx.lineWidth = 2;
   lineCtx.stroke();
 
-  drawLink(110, 140, 160, 140);
+  drawLink(110, 140, 160, 140, 'wired', isInternetConnected);
 
   const type = latestNetworkInfo?.type ?? 'unknown';
-  drawLink(220, 140, 270, 140, type);
+  drawLink(220, 140, 270, 140, type, isDeviceConnected);
 }
 drawLine();
 
