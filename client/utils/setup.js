@@ -1,15 +1,27 @@
-const { Tray, Menu, BrowserWindow, screen } = require('electron');
+const { Tray, Menu, BrowserWindow, screen, nativeTheme } = require('electron');
 const path = require('path');
 
 let tray = null;
 let win = null;
 
 function createTray() {
-  tray = new Tray(path.join(__dirname, '../public/images/yoping.png'));
+  const isDarkMode = nativeTheme.shouldUseDarkColors;
+  const trayIcon = isDarkMode
+    ? path.join(__dirname, '../public/images/yoping-light.png')
+    : path.join(__dirname, '../public/images/yoping-dark.png');
+  tray = new Tray(trayIcon);
 
   const contextMenu = Menu.buildFromTemplate([]);
   tray.setContextMenu(contextMenu);
   tray.setToolTip('Yoping App');
+
+  nativeTheme.on('updated', () => {
+    const isDark = nativeTheme.shouldUseDarkColors;
+    const updatedIcon = isDark
+      ? path.join(__dirname, '../public/images/yoping-light.png')
+      : path.join(__dirname, '../public/images/yoping-dark.png');
+    tray.setImage(updatedIcon);
+  });
 
   tray.on('click', (_event, bounds) => {
     if (win) {
