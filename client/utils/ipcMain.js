@@ -21,9 +21,11 @@ function setupContextMenu() {
 }
 
 function createFeedbackWindow() {
+    const isMac = process.platform === 'darwin';
+    const windowHeight = isMac ? 400 : 412;
     const win = new BrowserWindow({
         width: 670,
-        height: 400,
+        height: windowHeight,
         resizable: false,
         show: true,
         autoHideMenuBar: true,
@@ -32,7 +34,6 @@ function createFeedbackWindow() {
         }
     });
     win.loadFile(path.join(__dirname, './../screen/feedback.html'));
-    win.webContents.openDevTools({ mode: 'detach' });
 }
 
 const setUpIpcMain = () => {
