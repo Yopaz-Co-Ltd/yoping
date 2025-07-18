@@ -4,6 +4,8 @@ const ping = require('ping');
 const { NETWORK_TYPES, PING_DOMAIN } = require('./const');
 const { showNotification } = require('./notification');
 
+let lastNotificationTime = 0;
+
 async function getNetworkInfo() {
   const type = await getConnectionType();
 
@@ -84,13 +86,19 @@ async function getWiredInfo() {
 }
 
 function getNetworkStatus(ping) {
-  if (!ping || ping >= 150) {
-    showNotification();
+  const now = Date.now();
+  const shouldNotify = !ping || ping >= 150;
+
+  if (shouldNotify) {
+    if (now - lastNotificationTime > 5 * 60 * 1000) { // noti again after 5 minutes
+      showNotification();
+      lastNotificationTime = now;
+    }
     return 'OFFLINE';
   }
 
-  if (ping < 50) return 'GOOD';
-  return 'SLOW';
+  lastNotificationTime = 0;
+  return ping < 50 ? 'GOOD' : 'SLOW';
 }
 
 module.exports = {

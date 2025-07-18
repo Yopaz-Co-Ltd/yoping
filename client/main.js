@@ -1,5 +1,3 @@
-console.log('Hello from Electron 👋')
-
 const { app } = require('electron')
 const SystemEvent = require('./services/events')
 const { createTray } = require('./utils/setup')
