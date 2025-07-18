@@ -6,31 +6,20 @@ import (
 	"log"
 	"os"
 	"time"
+	"yoping-server-backend/database"
 
-	"github.com/ClickHouse/clickhouse-go/v2"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	// Init ClickHouse connection
-	conn, err := clickhouse.Open(&clickhouse.Options{
-		Addr: []string{getEnv("CLICKHOUSE_ADDR", "127.0.0.1:9000")},
-		Auth: clickhouse.Auth{
-			Database: getEnv("CLICKHOUSE_DB", "default"),
-			Username: getEnv("CLICKHOUSE_USER", "default"),
-			Password: getEnv("CLICKHOUSE_PASSWORD", "mypassword"),
-		},
-		DialTimeout: 5 * time.Second,
-	})
+	err := godotenv.Load()
 	if err != nil {
-		log.Fatalf("failed to create ClickHouse connection: %v", err)
+		log.Fatal("Error loading .env file")
 	}
 
-	// Test connection
-	if err := conn.Ping(context.Background()); err != nil {
-		log.Fatalf("failed to ping ClickHouse: %v", err)
-	}
-	log.Println("Connected to ClickHouse successfully!")
+	database.InitClickhouseConnection()
+	database.Migrate()
 
 	// Init Gin
 	r := gin.Default()
@@ -41,7 +30,7 @@ func main() {
 
 	r.GET("/clickhouse", func(c *gin.Context) {
 		var now time.Time
-		if err := conn.QueryRow(context.Background(), "SELECT now()").Scan(&now); err != nil {
+		if err := database.DBConn.QueryRow(context.Background(), "SELECT now()").Scan(&now); err != nil {
 			c.JSON(500, gin.H{"error": err.Error()})
 			return
 		}
