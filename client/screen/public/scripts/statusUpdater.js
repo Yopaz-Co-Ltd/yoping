@@ -6,8 +6,6 @@ export const NETWORK_STATUS_STATES = {
 
 export function updateNetworkInfo(networkInfo) {
   const ssid = document.querySelector('.ssid');
-  const pingLocalEl = document.getElementById('ping-local');
-  const pingInternetEl = document.getElementById('ping-internet');
 
   if (ssid) {
     if (networkInfo.type === 'wifi' && networkInfo.data) {
