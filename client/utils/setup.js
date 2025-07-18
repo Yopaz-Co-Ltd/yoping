@@ -5,7 +5,7 @@ let tray = null;
 let win = null;
 
 function createTray() {
-  tray = new Tray(path.join(__dirname, '../public/images/yoping.png'));
+  tray = new Tray(path.join(__dirname, '../public/images/yopingTemplate.png'));
 
   const contextMenu = Menu.buildFromTemplate([]);
   tray.setContextMenu(contextMenu);
